@@ -7,6 +7,30 @@ date: "`r Sys.Date()`"
 
 #ICMA Sept 9 2024
 ```{r}
+#The downloaded binary packages are in
+#C:\Users\mchin\AppData\Local\Temp\RtmpW0fCpq\downloaded_packages
 plot(cars)
+```
+#ICMA Sept 11 2024
+```{r}
+ohno_this_is_a_nightmare <- "hello"
+```
+```{r}
+2+2
+```
+```{r}
+x <- 2+2
+
+```
+
+```{r}
+?mean
+#how we can look for things we don't know.(use ?)
+#function call looks like mean()
+#arrays look like c(2,3,4)
+```
+
+```{r}
+sd(1:2) ^ 2
 ```
 
