@@ -13,6 +13,7 @@ library("tidyverse")
 ```
 
 #Week 1
+
 *In order to figure out which function loaded the tidyverse library, I searched the following into the Google Search Engine "load code chunk that loads tidyverse library". 
 
 *I read the description given to me by first link "https://stackoverflow.com/questions/58289197/how-to-write-an-r-chunk-to-load-the-tidyverse"
