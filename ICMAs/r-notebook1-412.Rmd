@@ -33,4 +33,51 @@ x <- 2+2
 ```{r}
 sd(1:2) ^ 2
 ```
+#ICMA Sept 16 2024
+
+```{r}
+#make sure to complete first code chunks 
+# to create a vector, use c(list, numbers, inside, like, this)
+my_numbers <- c( 1,2,3,4,5,8,9,10)
+```
+
+```{r}
+library(magrittr)
+library(tidyverse)
+#must be loaded each session
+```
+
+```{r}
+mean(my_numbers)
+```
+```{r}
+my_numbers %>% 
+  mean()
+```
+```{r}
+getwd()
+```
+
+```{r}
+?mtcars
+mtcars
+
+```
+
+```{r}
+write_csv(mtcars, # object name, 
+         "mtcars_fromR.csv" #file name to save it"
+         )
+#utils is BaseR, but we want to use the _ version, as it is a part of the tidyverse pkg.
+#is wihout rowname implementation and use of "rowtoname function"
+```
+
+
+ 
+```{r}
+read_csv("mtcars_fromR.csv")
+
+```
+
+
 
