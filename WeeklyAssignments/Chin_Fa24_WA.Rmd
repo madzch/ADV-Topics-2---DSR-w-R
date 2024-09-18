@@ -34,15 +34,16 @@ The 'tidyverse' is a set of packages that work in harmony because they share com
 # Week Assignment 2
 
 ```{r}
-setwd("C:/Users/mchin/OneDrive/Documents/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
+#setwd("C:/Users/mchin/OneDrive/Documents/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
 #here I am checking that I have switched to the correct directory
 
-getwd()
+#getwd()
 
 # *Above,  I am grabbing the dataset from my tidydata folder (changing the directory), where MFInd resides
 
 
 read_csv("MFIndD_analogy.csv") #renamed already
+
 
 #Here I am reading in the info from MFIndD_analogy.csv
 

@@ -78,6 +78,33 @@ write_csv(mtcars, # object name,
 read_csv("mtcars_fromR.csv")
 
 ```
+#ICMA Sept 18 2024
 
+```{r}
+?ChickWeight
+glimpse(ChickWeight)
+```
+```{r}
+
+ChickWeight %>%
+  select(Chick,weight) %>%
+  head (n= 3)
+```
+
+```{r}
+#adding a new column called weight lbs
+ChickWeight %>%
+  mutate(weight_lbs = weight/453.6) %>%
+#mutate always adds the columns to the end of your graphs
+#create summary table that has, #of chicks, avg weight,avg lbs on Day 20.
+  #for getting each diet group, we can use (the below) 
+ group_by(Diet,Time)%>%
+  summarise(N= n(), mean_wgt_gm = mean(weight),
+            mean_wgt_lbs = mean(weight_lbs)) %>%
+            filter(Time == 20)
+```
+```{r}
+glimpse(mtcars)
+```
 
 
