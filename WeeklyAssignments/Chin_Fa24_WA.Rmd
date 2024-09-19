@@ -36,11 +36,12 @@ The 'tidyverse' is a set of packages that work in harmony because they share com
 ```{r}
 
 read_csv("MFIndD_analogy.csv") #renamed 
-
-
 #Here I am reading in the info from MFIndD_analogy.csv
 
 file.rename("MFIndD_analogy.csv","Analogy_Dataset.csv")
+#I was unable to find a direct function equivalent to
+#the file.rename() function in  the tidyverse library
+
 #When run, file.rename(...) returns true
 
 
@@ -78,14 +79,10 @@ summarise(N=n()) %>%
 ```{r}
 analogy_data%>%
 group_by(qualtrics_id,trial_number)%>%
-#select(trial_number)%>%
 summarise(trial_number, count = n(), .groups = "drop_last")%>%
   count()
-
 #I added the drop_last because I was getting an error"Adding missing grouping variables". 
 # I have checked Stack Overflow for answers, and this one seems to work!
-
-
 ```
 
 2c.Yes, everyone has data from the same number of trials. Each unique Id has n trials, which are all equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
