@@ -87,4 +87,4 @@ summarise(trial_number, count = n(), .groups = "drop_last")%>%
 
 
 
-2c.Yes, everyone has data from the same number of trials. Each unique Id has n trials, which are all equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
+2c.Yes, everyone has data from the same number of trials. Each unique Id has  completed n trials, which for all are equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
