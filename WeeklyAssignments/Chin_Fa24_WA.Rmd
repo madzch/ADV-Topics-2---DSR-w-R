@@ -82,7 +82,9 @@ group_by(qualtrics_id,trial_number)%>%
 summarise(trial_number, count = n(), .groups = "drop_last")%>%
   count()
 #I added the drop_last because I was getting an error"Adding missing grouping variables". 
-# I have checked Stack Overflow for answers, and this one seems to work!
+#I have checked Stack Overflow for answers, and this one seems to work!
 ```
+
+
 
 2c.Yes, everyone has data from the same number of trials. Each unique Id has n trials, which are all equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
