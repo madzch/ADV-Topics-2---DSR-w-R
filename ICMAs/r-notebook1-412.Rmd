@@ -106,5 +106,58 @@ ChickWeight %>%
 ```{r}
 glimpse(mtcars)
 ```
+#ICMA Sept 23 2024 
+```{r}
+head(billboard)
+?pivot_longer
+```
+```{r}
+billboard_long <- billboard %>%
+pivot_longer(cols = starts_with("wk"),
+             names_to = "week",
+             values_to = "position",
+             names_prefix = "wk", 
+             values_drop_na = TRUE)
+```
 
+```{r}
+head(billboard_long)
+dim(billboard)
+dim(billboard_long)
+#look! _long is actually longer! with more rows
+```
+
+```{r}
+billboard_long
+```
+```{r}
+billboard_long%>%
+  pivot_wider(names_from = week,
+              values_from = position)
+#error bc we did not add a column name
+```
+
+```{r}
+#separate () separates a column by a specific separator
+?separate
+billboard %>%
+  separate(col = date.entered, 
+           into = c("year", "month", "day"))
+#separated the dates into year, month, day
+#she automatically set the sep(separator) to be an non-alphanumeric characters
+
+```
+
+```{r}
+#billboard%>%
+#unite(data,col, sep "_" )
+```
+```{r}
+#explicit missing values - NA is in the data-set
+#implicit missing - the value just DOES not appear in the data-set (you have to know this data)
+#complete() - turns implicit missing values into explicit missing values 
+#fill()- fills missing values in selected columns using the next or previous entry. 
+#replace_NA() - Replace NA's with specified values  -> 0 instead of NA.
+#NA_if : Convert specified values to NA. 
+```
 
