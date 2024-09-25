@@ -88,3 +88,24 @@ summarise(trial_number, count = n(), .groups = "drop_last")%>%
 
 
 2c.Yes, everyone has data from the same number of trials. Each unique Id has  completed n trials, which for all are equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
+
+# Weekly Assignment 3 
+
+```{r}
+analogy_data%>%
+group_by(qualtrics_id,trial_number)%>%
+summarise(trial_number, count = n(), .groups = "drop_last")%>%
+  count() -> num_of_trials
+
+num_of_trials
+
+#I took the code snippet from the previous assignment because it has those two columns mentioned in the instructions
+
+#I am also checking to see if num_of_trials runs as expected separately from storing the info in "num_of_trials". Which it works as expected!
+
+```
+
+```{r}
+
+```
+

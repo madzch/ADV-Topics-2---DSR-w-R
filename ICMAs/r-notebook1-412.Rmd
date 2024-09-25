@@ -161,3 +161,24 @@ billboard %>%
 #NA_if : Convert specified values to NA. 
 ```
 
+#ICMA Sept 25 2024
+
+```{r}
+head =(ChickWeight)
+ChickWeight %>%
+  ggplot(aes(x = weight)) + #provide the aes(aesthetic mapping, in this case, x-axis only)
+geom_histogram()
+```
+```{r}
+head =(ChickWeight)
+ChickWeight %>%
+  ggplot(aes(y = weight, 
+             x = Time,
+             color = Diet)) + 
+  geom_point() +
+  geom_smooth() +
+#creates function of best fit
+# to remove the error bands, write the following = geom_smooth(se = FALSE)
+theme_minimal()
+```
+
