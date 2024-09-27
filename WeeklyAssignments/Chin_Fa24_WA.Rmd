@@ -133,6 +133,7 @@ reshaped_data <- analogy_data %>%
 reshaped_data
 ```
 ```{r, eval=FALSE}
+ #eval=FALSE (chunk header not showing on HTML) 
 analogy_data%>%
 group_by(qualtrics_id,response_type = "Rel")%>%
 summarise(trial_number, .groups = "drop_last")%>%
