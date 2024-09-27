@@ -93,19 +93,55 @@ summarise(trial_number, count = n(), .groups = "drop_last")%>%
 
 ```{r}
 analogy_data%>%
-group_by(qualtrics_id,trial_number)%>%
-summarise(trial_number, count = n(), .groups = "drop_last")%>%
-  count() -> num_of_trials
+ filter(response_type == "Rel") %>%              # Filter rows with response_type == "Rel"
+  group_by(qualtrics_id) %>%                      # Group by qualtrics_id
+  summarise(num_of_trials = n(), .groups = "drop") %>%  # Count the number of "Rel" responses per ID
+  distinct(qualtrics_id, num_of_trials) -> num_of_trials
 
-num_of_trials
-
-#I took the code snippet from the previous assignment because it has those two columns mentioned in the instructions
+#I took inspiration from the code snippet from the previous assignment because it has those two columns mentioned in the instructions
 
 #I am also checking to see if num_of_trials runs as expected separately from storing the info in "num_of_trials". Which it works as expected!
 
 ```
+```{r}
+num_of_trials
+```
 
 ```{r}
+num_of_trials%>%
+  ggplot(aes(x = num_of_trials))+
+           geom_histogram()+ 
+ labs(y = "number of 'Rel' responses", 
+      x = "amount of 'Rel' per person")
+
+         
+
+
+```
+2. The variable previously known as "num_of_trials", now renamed to = amount of "Rel" per person, shows a disbursement of how many people responded with "Rel" a certain amount of times. It I also notice from the histogram that the majority of responses with "Rel" came from participants who responded to all of their trials with "Rel", which would not have been found out without this variable. 
+
+```{r}
+Analogy_Dataset.csv <- analogy_data #%>%
+reshaped_data <- analogy_data %>%
+  select(qualtrics_id, trial_number, response_type) %>%   # Select relevant columns
+  filter(trial_number <= 8) %>%                          # Keep only the first 8 trials
+  pivot_wider(names_from = trial_number,                 # Reshape from long to wide format
+              values_from = response_type, 
+              names_prefix = "trial_") %>%               # Rename trials to trial_1, trial_2, etc.
+  select(qualtrics_id,trial_1, trial_2, trial_3, trial_4, trial_5, trial_6, trial_7, trial_8) # Ensure only 9 columns (ID + 8 trials) and put them in order! 
+ 
+reshaped_data
+```
+```{r, eval=FALSE}
+analogy_data%>%
+group_by(qualtrics_id,response_type = "Rel")%>%
+summarise(trial_number, .groups = "drop_last")%>%
+  distinct(qualtrics_id,response_type)
+#.groups = "drop_last")->
+
+#The issue with this code is that response_type = "Rel" is not a valid way to filter the data within group_by(). Instead, this syntax is trying to create a new grouping variable that doesn't actually filter the data. As a result, the code does not return the expected results, and I ended up with a grouping that included unwanted response types.
+
+#I also was having a hard time figuring out how to sort the trial numbers only using dplyr, but was able to get all of info on there by manually typing out trial_1 .... trial_8, but I had trouble optimizing this process to avoid possible human error. But all of the info is there!
 
 ```
 
