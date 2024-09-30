@@ -1,0 +1,69 @@
+---
+title: "Data Exercise 1 : Decision Making "
+author: "Madison Chin"
+date: "`r Sys.Date()`"
+output: html_notebook
+---
+
+
+#Data Exercise 
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+de1 <- read_csv("CogSci412_DE1_data.csv") %>%
+  filter(Progress == 100 & Status == "IP Address") %>%
+  mutate(condition = case_when(is.na( FL_39_DO) == FALSE ~ FL_39_DO, # if this condition is true do this first case
+                               is.na( FL_43_DO) == FALSE ~ FL_43_DO,))%>% #if not do this second case
+  #selecting and renaming vaiables that we want into a cleaner dataset
+
+  select(ResponseId,
+         condition,
+         familiarity = Q10,
+         pencil_control = `Pencil Control`, 
+         pencil_control_conf = `Conf. Pencil Control`, 
+         mag_stand = `Magazine Standard`,
+         mag_stand_conf = `Conf. Mag. Stand.`, 
+         mag_control = Magazine_Control,
+         mag_control_conf = `Conf. Mag. Control` ,
+         pencil_stnd = Pencil_Standard,
+         pencil_stnd_conf = `Conf. Pencil Stand.`, 
+         FL_42_DO,
+         FL_39_DO,
+         FL_43_DO)%>%
+  filter(ResponseId != "BL_3ymTJ3ZOZWWbWGa|MagazineControl")
+  
+  
+
+#this is the correct assignment way I think.
+#na.rm removes "NA's"
+
+```
+
+```{r}
+de1
+```
+
+Is currently in wide form, we want it in long form for tidyverse
+
+- What we want in long form 
+ResponseId : unique idenifier for that dataset
+Content : was the wuestion abotu pencils or mags?
+Type: Was the question a control question or a standard question?
+Value : the actual observed number/response. 
+
+```{r}
+de1%>%
+  pivot_longer(pencil_control,pencil_stnd, #which columns to pivot
+               names_to = "old_col", #where to put the old column names 
+               values_to = "old_val")#where to put the data observations 
+```
+
+```{r}
+long_de1 <- de1 %>%
+  filter(is.na(value) == FALSE)%>%
+  separate(into = c("content", "type", "DV"), col = old_col)
+```
+
