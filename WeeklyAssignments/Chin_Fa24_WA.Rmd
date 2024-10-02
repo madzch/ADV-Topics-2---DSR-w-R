@@ -160,9 +160,46 @@ rationality_ques%>%
   head(6)
 ```
 
-1. The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. Some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
+1. The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. For example, some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
+
+
 
 ```{r}
-rationality_ques
-```
+dbl_response <-rationality_ques%>%
+  mutate(response_dbl = case_when(
+    response == "Strongly Disagree" ~ 1,
+    response == "2" ~ 2,
+    response == "3" ~ 3,
+    response == "4" ~ 4,
+    response == "Strongly Agree" ~ 5,
+    TRUE ~ NA_real_ #to acknowledge and not replace any missing values
+  ))
+dbl_response
 
+```
+I wanted to have "TRUE ~ as.numeric(response)" instead of writing out response == 2,3,4, for efficiency. But, because this is a baser function and not dplyr, I stuck to a redundant implementation. 
+```{r}
+#items that need to be scored are marked as "neg" if not then marked with "NA" 
+new_score <- dbl_response%>%
+  mutate(new_scored_response = if_else(
+    rev_scoring == "neg", 6 - response_dbl,
+    response_dbl,
+    missing = response_dbl # this should account for all of the NA values
+    ))
+
+new_score
+```
+```{r}
+new_score <- new_score %>%
+mutate(is_equal = new_scored_response == scored_response)
+# To check how many rows are not equal,filter those mismatches
+
+mismatch_count <- new_score %>%
+  filter(is_equal == FALSE) %>%
+  count()
+
+# View the count of mismatches
+mismatch_count
+  
+```
+n=0, So there are no mismatched values.
