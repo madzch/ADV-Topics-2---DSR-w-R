@@ -6,7 +6,7 @@ output: html_notebook
 ---
 
 
-#Data Exercise 
+#Data Exercise 1
 ```{r}
 library(tidyverse)
 ```
@@ -17,7 +17,7 @@ de1 <- read_csv("CogSci412_DE1_data.csv") %>%
   filter(Progress == 100 & Status == "IP Address") %>%
   mutate(condition = case_when(is.na( FL_39_DO) == FALSE ~ FL_39_DO, # if this condition is true do this first case
                                is.na( FL_43_DO) == FALSE ~ FL_43_DO,))%>% #if not do this second case
-  #selecting and renaming vaiables that we want into a cleaner dataset
+  #selecting and renaming variables that we want into a cleaner dataset.
 
   select(ResponseId,
          condition,
@@ -28,7 +28,7 @@ de1 <- read_csv("CogSci412_DE1_data.csv") %>%
          mag_stand_conf = `Conf. Mag. Stand.`, 
          mag_control = Magazine_Control,
          mag_control_conf = `Conf. Mag. Control` ,
-         pencil_stnd = Pencil_Standard,
+         pencil_stnd = `Pencil_Standard`,
          pencil_stnd_conf = `Conf. Pencil Stand.`, 
          FL_42_DO,
          FL_39_DO,
@@ -43,27 +43,57 @@ de1 <- read_csv("CogSci412_DE1_data.csv") %>%
 ```
 
 ```{r}
-de1
+de1%>%
+  distinct(mag_stand)
 ```
 
 Is currently in wide form, we want it in long form for tidyverse
 
 - What we want in long form 
-ResponseId : unique idenifier for that dataset
-Content : was the wuestion abotu pencils or mags?
+ResponseId : unique identifier for that dataset.
+Content : was the question about pencils or mags?
 Type: Was the question a control question or a standard question?
 Value : the actual observed number/response. 
 
 ```{r}
-de1%>%
+distinct(mag_stand)
+```
+
+
+```{r}
+de1_longer <- de1%>%
   pivot_longer(pencil_control,pencil_stnd, #which columns to pivot
                names_to = "old_col", #where to put the old column names 
                values_to = "old_val")#where to put the data observations 
 ```
 
 ```{r}
-long_de1 <- de1 %>%
+ de1_longer %>%
   filter(is.na(value) == FALSE)%>%
   separate(into = c("content", "type", "DV"), col = old_col)
+#is.na == TRUE when the thing is NA and is == False when the thing is not NA 
 ```
 
+```{r}
+de1_longer %>%
+  filter(is.na(value) == FALSE)%>%
+  separate(into = c("content", "type", "DV"), col = old_col)%>%
+  mutate( DV = case_when(is.na (DV)==TRUE ~ "resp"
+                         , DV =="conf" ~ "conf")) #sis will get prev DV replaced)
+```
+
+We have to re-code the numbers because free type seemed to mess us up a little bit.
+Im just going to take notes from here on out : 
+we can use parse_number() to help us organize and formulate numbers in the "correct" manner.
+
+replace value with the number only stuff - getting rid of "cents" 
+using mutate (value = parse_number (value))%>% ....
+basically we hard coded her using case_when(value is less than 1 then mult by 100)
+
+in order to analyze the stuff in the dataset, : we can do mutate to show what the correct answer is
+accuracy =  if_else(value == correct answer, 
+TRUE, #they're correct
+FALSE #they are incorrect)
+
+case_when seems to work better for her, recall case uses tilde for TRUE/FALSE assignments
+stat = "identity" gives me the actual value inside of geom_bar

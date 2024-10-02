@@ -145,7 +145,7 @@ analogy_data%>%
 group_by(qualtrics_id,response_type = "Rel")%>%
 summarise(trial_number, .groups = "drop_last")%>%
   distinct(qualtrics_id,response_type)
-#.groups = "drop_last")->
+
 
 #The issue with this code is that response_type = "Rel" is not a valid way to filter the data within group_by(). Instead, this syntax is trying to create a new grouping variable that doesn't actually filter the data. As a result, the code does not return the expected results, and I ended up with a grouping that included unwanted response types.
 
@@ -154,3 +154,15 @@ summarise(trial_number, .groups = "drop_last")%>%
 ```
 
 # Weekly Assignment 4
+```{r}
+rationality_ques<- read_csv("MFIndD_REI.csv")
+rationality_ques%>%
+  head(6)
+```
+
+1. The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. Some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
+
+```{r}
+rationality_ques
+```
+
