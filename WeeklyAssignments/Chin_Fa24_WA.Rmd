@@ -160,7 +160,7 @@ rationality_ques%>%
   head(6)
 ```
 
-1. The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. For example, some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
+The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. For example, some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
 
 
 
