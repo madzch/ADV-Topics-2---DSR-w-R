@@ -177,7 +177,7 @@ dbl_response <-rationality_ques%>%
 dbl_response
 
 ```
-I wanted to have "TRUE ~ as.numeric(response)" instead of writing out response == 2,3,4, for efficiency. But, because this is a baser function and not dplyr, I stuck to a redundant implementation. 
+I wanted to have "TRUE ~ as.numeric(response)" instead of writing out response == 2,3,4, for efficiency. But, because this is a "base-r" function and not dplyr, I stuck to a redundant implementation. 
 ```{r}
 #items that need to be scored are marked as "neg" if not then marked with "NA" 
 new_score <- dbl_response%>%

@@ -181,4 +181,35 @@ ChickWeight %>%
 # to remove the error bands, write the following = geom_smooth(se = FALSE)
 theme_minimal()
 ```
+#ICMA October 7 2024
 
+```{r}
+as.numeric("12")
+#only parses digits, words do not count, but numbers as chars work tho.
+```
+
+We can use is.numeric -> aka is.TYPE() in order to do a check to see i she is wo she is. 
+Doubles are r's default type of numeric.
+"as.integer()" forces a type to become an integer.
+To check type, we can do typeof(), to get the type directly.
+
+```{r}
+as.integer(12.3)
+```
+
+True = 1 
+False = 0
+
+TRY on your own activity
+```{r}
+3 < 5 | FALSE
+#true
+```
+```{r}
+is.numeric(mean(c(12,31,15.57,4)))
+#true 2nd
+```
+
+```{r}
+((1+2)< -1000) | (TRUE | NA)
+```
