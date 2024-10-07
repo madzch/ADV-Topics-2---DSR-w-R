@@ -5,6 +5,13 @@ date: "`r Sys.Date()`"
 output: html_notebook
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
+#had to be added for working dir issues, now fixed
+```
+
+
+
 # Initial Loading 
 ```{r}
 #in order to load the tidyverse library you must run the following
@@ -50,6 +57,7 @@ file.rename("MFIndD_analogy.csv","Analogy_Dataset.csv")
 The column that contains the unique identifier for each participate is titled "qualtrics_id" in the csv.
 
 ```{r}
+setwd("~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
 analogy_data <- read_csv("Analogy_Dataset.csv")
 #turning analogy data set into a usable and digestible variable. 
 ```
