@@ -9,7 +9,7 @@ output: html_notebook
 ```{r}
 #in order to load the tidyverse library you must run the following
 
-library("tidyverse")
+library(tidyverse)
 ```
 
 # Weekly Assignment 1
