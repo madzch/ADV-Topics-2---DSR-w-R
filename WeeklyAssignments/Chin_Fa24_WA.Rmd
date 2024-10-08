@@ -211,3 +211,32 @@ mismatch_count
   
 ```
 n=0, So there are no mismatched values.
+
+#Weekly Assignment 5
+
+```{r}
+rei_summary <- new_score %>%
+  filter(sub_type %in% c("EA", "EE", "RE", "RA")) %>% # Keep only relevant sub_types
+  group_by(qualtrics_id, sub_type) %>%
+  summarise(score = sum(new_scored_response, na.rm = TRUE), .groups = 'drop') 
+
+# 2. Create a complete dataset to ensure all combinations of qualtrics_id and sub_types
+#complete_rei_summary <- rei_summary %>%
+  #complete(qualtrics_id, sub_type = c("EA", "EE", "RE", "RA"), fill = list(score = NA))
+
+# Check the summary to confirm it has the right number of rows
+#print(complete_rei_summary)
+rei_summary
+```
+
+
+```{r}
+# Scatterplot for relationship between REI score and newscore 
+ggplot(combined_data, aes(x = sub_type, y = score, color = sub_type)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "REI Scores by Subtype",
+       x = "Sub Type", y = "Total Score") +
+  theme_minimal()
+```
+
