@@ -213,3 +213,75 @@ is.numeric(mean(c(12,31,15.57,4)))
 ```{r}
 ((1+2)< -1000) | (TRUE | NA)
 ```
+#ICMA Oct 9 2024
+Data Structures : 
+lists 
+to get elements 
+*you can do a list of vectors, and then go 2 brackets deeper to choose an element of that list
+
+```{r}
+my_list <- list(c("p","o","w","e","r"))
+the_vector_but_w <- my_list[[1]][3]
+the_vector_but_w
+```
+Tibbles
+
+treat like a data frame (table thingie)
+*tribble for "row-wise" declaration
+
+
+```{r}
+new_tibble_columnwise <- tibble( x  = 1:5 , y=1, z = x^2 + y)
+new_tibble_columnwise
+```
+Combining Data : 
+diff vars - use join 
+left_join vs right_join
+
+left join -> joiner gets added to og, but only to stuff that they share in common with og (columnwise)
+right join -> joiner becomes the joinee, and joiner values are matched to og. 
+
+full join -> combines everybody 
+
+inner join -> venn diagram of rows that match
+
+```{r}
+age_data <- tribble(
+                     ~id, ~age,
+                     1,8,
+                     2,10,
+                     3,8,
+                     5,9
+                     
+              )
+
+gender_data <- tribble (
+                        ~id, ~ gender,
+                        1,"f",
+                        2,"m",
+                        3,"nb",
+                        4,"m",
+                        6,"f",
+              )
+  
+
+```
+
+
+```{r}
+age_data
+```
+```{r}
+gender_data
+```
+```{r}
+full_join(age_data, gender_data)
+```
+intersect is different from inner join
+intersect = a set operation -> this means that interesct worls if the data in in two different sets are the same 
+there is also : 
+union, (rows that appear in ether or both y and z)
+setdiff(rows that appear in y but not in z)
+
+bind_rows()
+bindcols() -> both assumes that everything is in the same order.(APPEND)
