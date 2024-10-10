@@ -282,4 +282,4 @@ ggplot(joined_data, aes(x = num_of_trials, y = score, color = sub_type)) +
 
 
 ```
-Question 3 (Pt 2). This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the 
+Question 3 (Pt 2). This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the plot.
