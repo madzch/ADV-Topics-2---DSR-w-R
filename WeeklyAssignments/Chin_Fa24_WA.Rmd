@@ -241,7 +241,7 @@ rei_summary
 ```
 
 ```{r}
-#Question 1b (part two)
+# Question 1b (part two)
 rei_summary%>%
   filter(is.na(score))
 
@@ -249,7 +249,7 @@ rei_summary%>%
  
 ```
 ```{r}
-# 1c Here I'll switch the na.rm "condition" back to true as I had it in my original (first code snippet) which I will replicate down below. This will assure that the scores are calculated and represented properly. 
+# Question 1c Here I'll switch the na.rm "condition" back to true as I had it in my original (first code snippet) which I will replicate down below. This will assure that the scores are calculated and represented properly. 
 rei_summary <- new_score %>%
   filter(sub_type %in% c("EA", "EE", "RE", "RA")) %>% # Keep only relevant sub_types
   group_by(qualtrics_id, sub_type) %>%
@@ -259,7 +259,7 @@ rei_summary
 
 ```
 ```{r}
-# 2 Combining the summarized datasets from analogy and rei(that we just finished):
+# Question 2 Combining the summarized datasets from analogy and rei(that we just finished):
 joined_data <- left_join(rei_summary,num_of_trials, by = ('qualtrics_id')) 
 
  
@@ -270,6 +270,7 @@ joined_data
 ```
 
 ```{r}
+#Question 3
 # Scatterplot for relationship between REI score and newscore 
 ggplot(joined_data, aes(x = num_of_trials, y = score, color = sub_type)) +
   geom_point() +
@@ -281,4 +282,4 @@ ggplot(joined_data, aes(x = num_of_trials, y = score, color = sub_type)) +
 
 
 ```
-3. This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the 
+Question 3 (Pt 2). This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the 
