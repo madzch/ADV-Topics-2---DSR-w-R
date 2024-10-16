@@ -283,3 +283,59 @@ ggplot(joined_data, aes(x = num_of_trials, y = score, color = sub_type)) +
 
 ```
 Question 3 (Pt 2). This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the plot.
+
+
+# Weekly Assignment 5 
+
+1) 
+```{r}
+magic_ball <- read_csv("MFindD_probtask.csv")
+magic_ball
+```
+2) part 1 
+```{r}
+unique_conditions <- magic_ball %>% distinct(condition) %>% 
+  pull(condition)
+#distinct conditions values
+unique_conditions
+```
+2) part 2 
+```{r}
+mean_reaction_times <- c()
+
+for (cond in unique_conditions) {
+  mean_reaction_time <- magic_ball %>% 
+    filter(condition == cond) %>% 
+    summarize(mean_reaction = mean(rt, na.rm = TRUE)) %>% 
+    pull(mean_reaction)
+  
+  mean_reaction_times <- c(mean_reaction_times, mean_reaction_time)
+}
+
+names(mean_reaction_times) <- unique_conditions
+mean_reaction_times
+
+```
+
+3) part 1
+```{r}
+# using across 
+magic_ball %>%
+  group_by(condition) %>%
+  summarise(across(c(rt), mean, .names = "mean_reaction_time"),
+            overall_accuracy = mean(correct)) %>%
+  select(mean_reaction_time, condition, overall_accuracy)
+```
+
+3) part 2
+```{r}
+# without using across 
+magic_ball %>%
+  group_by(condition) %>%
+  summarise(
+    mean_reaction_time = mean(mean_reaction_time),
+    overall_accuracy = mean(correct == TRUE)
+  )%>%
+  select(mean_reaction_time,condition, overall_accuracy)
+```
+
