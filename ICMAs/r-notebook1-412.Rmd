@@ -181,7 +181,7 @@ ChickWeight %>%
 # to remove the error bands, write the following = geom_smooth(se = FALSE)
 theme_minimal()
 ```
-#ICMA October 7 2024
+#ICMA Oct 7 2024
 
 ```{r}
 as.numeric("12")
@@ -285,3 +285,17 @@ setdiff(rows that appear in y but not in z)
 
 bind_rows()
 bindcols() -> both assumes that everything is in the same order.(APPEND)
+
+
+#ICMA Oct 16 2024
+
+```{r}
+# for loops ( and iteration in R)
+#you should write 
+#for (var in seq){
+  #expr
+#}
+#for if statements, the if/elseif are the same syntax as java
+
+```
+
