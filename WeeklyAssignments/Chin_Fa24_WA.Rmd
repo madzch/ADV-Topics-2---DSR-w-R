@@ -320,11 +320,11 @@ mean_reaction_times
 3. part 1
 ```{r}
 # using across 
-magic_ball %>%
-  group_by(condition) %>%
-  summarise(across(c(rt), mean, .names = "mean_reaction_time"),
-            overall_accuracy = mean(correct)) %>%
-  select(mean_reaction_time, condition, overall_accuracy)
+magic_ball%>%
+ group_by(condition) %>%
+  summarise(across(c(rt, correct), mean, .names = "mean_{col}")) %>%
+  rename(overall_accuracy = mean_correct) %>%
+  select( mean_rt,condition, overall_accuracy)
 ```
 
 3. part 2
@@ -333,9 +333,9 @@ magic_ball %>%
 magic_ball %>%
   group_by(condition) %>%
   summarise(
-    mean_reaction_time = mean(mean_reaction_time),
-    overall_accuracy = mean(correct == TRUE)
+    mean_rt = mean(rt),
+    overall_accuracy = mean(correct)
   )%>%
-  select(mean_reaction_time,condition, overall_accuracy)
+  select(mean_rt,condition, overall_accuracy)
 ```
 
