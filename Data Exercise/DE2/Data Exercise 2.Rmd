@@ -1,0 +1,96 @@
+---
+title: "Data Exercise 2 "
+author: "Madison Chin"
+date: "`r Sys.Date()`"
+output: html_notebook
+---
+
+
+#Data Exercise 2
+```{r}
+library(tidyverse)
+
+``
+```
+Data 
+
+```{r}
+files <- list.files(path = "jumping_data_parker/",
+                         pattern = "*.csv",
+                         full.names = TRUE)
+```
+
+```{r}
+convert_columns <- function(file) {
+  
+  file <- file %>%
+    mutate(sex = case_when(sex == FALSE ~ "F",
+                         sex == "M" ~ "M"),
+           date = as.character(date))
+}
+```
+
+
+
+```{r}
+raw_data <- map(files, read_csv) %>%
+  map(convert_columns) %>%
+  bind_rows()
+#takes data 1 with modified cols, and stack d2, then d3, and so on (literally a stack of data)
+```
+```{r}
+raw_data %>%
+  distinct(condition)
+```
+
+
+Exploring the Data 
+
+```{r}
+summary_data <- raw_data %>%
+  group_by(subject, distance) %>%
+  summarise(succ_rate = sum(outcome == 1)/n())
+```
+
+Day 2: 
+Make our plot look like the sucessful(moreso) mouse trials 
+Explore a different feature of the dataset 
+Make a presentation of that new feature we explore 
+
+#Make our plot look like theirs 
+
+```{r}
+summary_data %>%
+  ggplot(aes(x = succ_rate)) +
+  geom_histogram() 
+```
+
+```{r}
+summary_data %>%
+  ggplot(aes(x = distance,
+             y = succ_rate,
+             group = subject)) +
+  geom_line() +
+  ylim(0, 1)
+```
+
+```{r}
+
+raw_data %>%
+  group_by(subject, distance) %>%
+# filter(outcome == 1 | outcome == 0)
+# filter(outcome != 2) 
+  filter(outcome %in% c(0, 1)) %>%
+  summarise(succ_rate = sum(outcome == 1)/n()) %>%
+  ggplot(aes(x = distance,
+             y = succ_rate,
+             color = "blue")) +
+  geom_line(aes(group = subject),alpha = 0.3) +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
+  stat_summary(fun.y = "mean", geom = "line")+ 
+  ylim(0, 1) + 
+  xlim(10,25) + 
+  labs(x = "gap distance (cm)",
+       y = "success rate")
+```
+
