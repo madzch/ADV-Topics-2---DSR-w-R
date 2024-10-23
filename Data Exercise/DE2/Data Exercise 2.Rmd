@@ -84,7 +84,7 @@ raw_data %>%
   summarise(succ_rate = sum(outcome == 1)/n()) %>%
   ggplot(aes(x = distance,
              y = succ_rate,
-             color = "blue")) +
+             color = "darkblue")) +
   geom_line(aes(group = subject),alpha = 0.3) +
   stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
   stat_summary(fun.y = "mean", geom = "line")+ 
@@ -92,5 +92,17 @@ raw_data %>%
   xlim(10,25) + 
   labs(x = "gap distance (cm)",
        y = "success rate")
+```
+
+
+```{r}
+raw_data %>%
+  filter(outcome %in% c(0,1))%>%
+  group_by(subject, experimenter)
+#...
+geom_poitn(aloha = 0.3) + 
+  ylim(0,1)
+
+#we can use annotate(x,y,"info", color = "anycolor") to write directly onto the plot. 
 ```
 
