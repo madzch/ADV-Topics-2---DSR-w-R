@@ -17,6 +17,7 @@ knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignmen
 #in order to load the tidyverse library you must run the following
 
 library(tidyverse)
+library (ggdist)
 ```
 
 # Weekly Assignment 1
@@ -338,4 +339,100 @@ magic_ball %>%
   )%>%
   select(mean_rt,condition, overall_accuracy)
 ```
+# Weekly Assignment 7 
 
+1.
+```{r}
+prob_data <- magic_ball
+```
+
+```{r}
+#Running the given code chunk
+prob_data %>%
+group_by(condition) %>%
+summarise(across(c(rt, correct), mean)) %>%
+pivot_longer(c(rt, correct)) %>%
+ggplot(aes(y = value, x = condition)) +
+geom_point(color = "red") +
+facet_wrap(~name, scales = "free")
+```
+1a. 
+Blob_shifted, for the "correct" plot, there seems to be a lower value, than in the rt plot, where the participants scored significantly higher (with a reaction time above 890 secs). 
+
+Blob_stacked, for the "correct" plot, there seems to be a higher amount of correct answers than in the rt plot (reaction time), but the true value in terms of the "hundreds", the rt value is significantly higher. This relation is hard to understand from the graph for someone who is not familiar with the data.
+
+dots_EqSizeSep - People had a higher correct rate here in comparison to their reaction time (rt) it seems that they took longer than their "Rand" counter part. 
+
+dots_EqSizerRand - Significantly higher "correct" rate, than "Sep", and lower reaction time in relation to its "Sep" counterpart. 
+
+1b) 
+Because the reaction time (rt) graph and the accuracy (correct) graph have different numerical ranges—rt values are in the high 800s, while correct values range around 0.60 to 0.70—it makes it challenging to compare both sides of the graph directly. This difference in scales can lead to misinterpretation of the data's significance. Graphs with such disparate ranges often require careful consideration or different visualization techniques to ensure clear, accurate comparisons. Additionally, the overlapping names of the conditions at the bottom make it hard to read, further complicating the comparison.
+
+1c.
+What’s hard to "see" in this plot:
+
+Detailed Differences: It's challenging to see more nuanced differences or variance within each condition because the plot only shows mean values. (We would need a larger graph though.)
+
+As I mentioned before, there are also issues with reading the conditions that are at the bottom of the graph. I had to squint to read them. 
+
+Distribution of Data: We miss out on how data points are distributed within each condition. Is there a lot of variance? Are there outliers? This type of plot doesn’t convey that information well.(Trends in the graph take a lot of effort to read)
+
+2. 
+(For some reason, when I had a shorter bit of code, "correct" was not being piped in properly)
+```{r}
+#Double checking summary is correct/Summarizing to get the proportion of the data correct. 
+prob_data_summary <- prob_data %>%
+  group_by(SubID, condition) %>%
+  summarise(prop_corr = mean(correct), .groups = 'drop')  # Ensure ungrouping
+
+# Check the summarized data
+print(prob_data_summary)
+```
+```{r}
+# Calculate mean proportion correct for each condition
+mean_prop_summary <- prob_data_summary %>%
+  group_by(condition) %>%
+  summarise(mean_prop_corr = mean(prop_corr),
+            sd_prop_corr = sd(prop_corr),  # Standard deviation for error bars(to help with readability of the plot)
+            n = n(), .groups = 'drop')
+```
+
+
+```{r}
+
+mean_prop_summary %>%
+  ggplot(aes(x = condition, y = mean_prop_corr)) +
+  geom_point(color = "blue") +
+  geom_errorbar(aes(ymin = mean_prop_corr - sd_prop_corr / sqrt(n), 
+                    ymax = mean_prop_corr + sd_prop_corr / sqrt(n)), 
+                width = 0.2) +
+  theme_minimal() +
+  labs(title = "Mean Proportion Correct by Condition",
+       x = "Condition", y = "Mean Proportion Correct") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+To make it less misleading I added the following to the plot : 
+Error Bars: Added error bars to show the variability and confidence intervals around the mean proportion correct. This helps understand the precision and spread of the data.
+
+Rotated Axis Labels: Rotated x-axis labels for better readability of the condition names. This avoids overlapping and cluttering of labels.
+
+3. 
+```{r}
+
+# Create plot with distributional information
+prob_data_summary %>%
+  ggplot(aes(x = condition, y = prop_corr)) +
+  ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
+  geom_point(aes(x = condition, y = mean(prop_corr)), 
+             color = "blue", position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
+  theme_minimal() +
+  labs(title = "Distribution of Proportion Correct by Condition",
+       x = "Condition", y = "Proportion Correct") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
+
+
+```
+ggdist::stat_slab(): Adds a distributional layer to the plot to show the density and spread of the data for each condition. This provides more insight into the variability and distribution that simple mean values and error bars might miss.
+geom_point() with position_nudge: Plots the mean proportion correct, slightly offset for visual clarity. This makes it easier to distinguish between the distribution and the mean value.
+
+theme(axis.text.x = element_text(angle = 45, hjust = 1)): Ensures the condition names are readable by rotating the x-axis labels.z
