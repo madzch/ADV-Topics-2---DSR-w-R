@@ -17,7 +17,8 @@ knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignmen
 #in order to load the tidyverse library you must run the following
 
 library(tidyverse)
-library (ggdist)
+library(ggdist)
+library(knitr)
 ```
 
 # Weekly Assignment 1
@@ -435,4 +436,59 @@ prob_data_summary %>%
 ggdist::stat_slab(): Adds a distributional layer to the plot to show the density and spread of the data for each condition. This provides more insight into the variability and distribution that simple mean values and error bars might miss.
 geom_point() with position_nudge: Plots the mean proportion correct, slightly offset for visual clarity. This makes it easier to distinguish between the distribution and the mean value.
 
-theme(axis.text.x = element_text(angle = 45, hjust = 1)): Ensures the condition names are readable by rotating the x-axis labels.z
+theme(axis.text.x = element_text(angle = 45, hjust = 1)): Ensures the condition names are readable by rotating the x-axis labels.z. 
+
+# Weekly Assignment 8
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Enable floating TOC for notebook
+knitr::opts_chunk$set(toc = TRUE, toc_depth = 1)
+
+```
+
+2. 
+
+```{r}
+#(Wrangle) calculate mean reaction time and proportion correct by SubID and condition
+average_data <- prob_data %>%
+  group_by(SubID, condition) %>%
+  summarize(rt = mean(rt), correct = mean(correct), .groups = 'drop')
+
+# Display the first six rows of the new dataframe
+head(average_data, 6)
+```
+3. Plot 1
+
+```{r}
+ggplot(average_data, aes(x = rt, y = correct, color = condition)) +
+  geom_point() +
+  labs(
+    title = "Reaction Time vs. Accuracy (Color by Condition)",
+    x = "Average Reaction Time (ms)",
+    y = "Proportion Correct"
+  ) +
+  theme_minimal()
+```
+
+Plot 2 
+
+```{r}
+# Plot with facet by condition
+ggplot(average_data, aes(x = rt, y = correct)) +
+  geom_point() +
+  facet_wrap(~ condition) +
+  labs(
+    title = "Reaction Time vs. Accuracy (Facets by Condition)",
+    x = "Average Reaction Time (ms)",
+    y = "Proportion Correct"
+  ) +
+  theme_minimal()
+
+```
+4. 
+**Observation:** In general, there appears to be a **negative correlation**between reaction time and accuracy across different conditions. As reaction time *decreases*, accuracy tends to *increase* slightly, though the trend varies by condition.
+
+
+
+
+
