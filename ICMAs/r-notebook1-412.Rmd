@@ -1,8 +1,17 @@
 ---
 title: "D2SC ICMA notebook"
-output: html_notebook
 author: "Madison Chin"
 date: "`r Sys.Date()`"
+output:
+  word_document:
+    toc: true
+    toc_depth: '2'
+  html_document:
+    toc: true
+    toc_depth: 2
+    df_print: paged
+  pdf_document:
+    toc: true
 ---
 
 #ICMA Sept 9 2024
@@ -298,4 +307,44 @@ bindcols() -> both assumes that everything is in the same order.(APPEND)
 #for if statements, the if/elseif are the same syntax as java
 
 ```
+
+
+#ICMA Oct 30 2024
+
+```{r}
+#Where would you find the YAML header ( top of the file (YAML aint markup language)) "header info" 
+#plain text( no frills, no bolding (which is what rich text is))
+
+#what is knitting? 
+#sends rmd -> md 
+
+#error from yaml toc : Error in yaml::yaml.load(..., eval.expr = TRUE) : 
+#Scanner error: mapping values are not allowed in this context at line 6, column 8
+#Calls: <Anonymous> ... parse_yaml_front_matter -> yaml_load -> <Anonymous>
+#Execution halted
+
+#after setting echo to false, (within knitr(download pkg), should see no code chunks, only outputs)
+
+#Markdown text: 
+#use *italics*, **bold**, 
+
+#fig.cap, allows us to add captions to our figures. 
+
+```
+
+Let's write a sentence that has **bold** and *italics* 
+Part 2 : create a var, then write a sentence that uses that variable, bold, and italics. 
+```{r}
+name <-  "Madison"
+```
+
+My name is `r name`!
+
+```{r chick-plot, fig.cap= "Chick weight across time"}
+ChickWeight %>%
+  ggplot(aes(y = weight, x = Time, group = Chick)) + 
+  geom_line()
+```
+
+
 
