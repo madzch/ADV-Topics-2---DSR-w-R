@@ -3,6 +3,9 @@ title: "D2SC: Weekly Assignments"
 author: "Madison Chin"
 date: "`r Sys.Date()`"
 output: html_notebook
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -10,9 +13,8 @@ knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignmen
 #had to be added for working dir issues, now fixed
 ```
 
+# Initial Loading
 
-
-# Initial Loading 
 ```{r}
 #in order to load the tidyverse library you must run the following
 
@@ -23,22 +25,36 @@ library(knitr)
 
 # Weekly Assignment 1
 
-*In order to figure out which function loaded the tidyverse library, I searched the following into the Google Search Engine "load code chunk that loads tidyverse library". 
+\*In order to figure out which function loaded the tidyverse library, I
+searched the following into the Google Search Engine "load code chunk
+that loads tidyverse library".
 
-*I read the description given to me by first link "https://stackoverflow.com/questions/58289197/how-to-write-an-r-chunk-to-load-the-tidyverse"
-, which after reading for a little bit, I found that someone had used the "library" function in order to load the library. 
+\*I read the description given to me by first link
+"<https://stackoverflow.com/questions/58289197/how-to-write-an-r-chunk-to-load-the-tidyverse>"
+, which after reading for a little bit, I found that someone had used
+the "library" function in order to load the library.
 
-*Then, I ran the above code chunk to figure out if the function would work for tidyverse. 
+\*Then, I ran the above code chunk to figure out if the function would
+work for tidyverse.
 
-*The core tidyverse packages were correctly added, but there seems to be some "Conflicts" in the Terminal after I ran it. 
+\*The core tidyverse packages were correctly added, but there seems to
+be some "Conflicts" in the Terminal after I ran it.
 
-*But, after further research I found that these are not going to negatively affect any other code that I would write, but RStudio recommends using a "conflicted package" to turn these conflicts into errors.
+\*But, after further research I found that these are not going to
+negatively affect any other code that I would write, but RStudio
+recommends using a "conflicted package" to turn these conflicts into
+errors.
 
 ```{r}
 ?tidyverse
 #Below is the provided description after running #?tidyverse
 ```
-The 'tidyverse' is a set of packages that work in harmony because they share common data representations and 'API' design. This package is designed to make it easy to install and load multiple 'tidyverse' packages in a single step. Learn more about the 'tidyverse' at https://www.tidyverse.org.
+
+The 'tidyverse' is a set of packages that work in harmony because they
+share common data representations and 'API' design. This package is
+designed to make it easy to install and load multiple 'tidyverse'
+packages in a single step. Learn more about the 'tidyverse' at
+<https://www.tidyverse.org>.
 
 # Weekly Assignment 2
 
@@ -56,7 +72,8 @@ file.rename("MFIndD_analogy.csv","Analogy_Dataset.csv")
 
 ```
 
-The column that contains the unique identifier for each participate is titled "qualtrics_id" in the csv.
+The column that contains the unique identifier for each participate is
+titled "qualtrics_id" in the csv.
 
 ```{r}
 setwd("~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
@@ -64,14 +81,15 @@ analogy_data <- read_csv("Analogy_Dataset.csv")
 #turning analogy data set into a usable and digestible variable. 
 ```
 
-
 ```{r}
 
 glimpse(analogy_data)
 
 ```
 
-2a. The above line of code results in a short "glimpse" revealing that the data set has 792 rows and 6 columns, in the first couple of lines of the output, as seen in the console when run.
+2a. The above line of code results in a short "glimpse" revealing that
+the data set has 792 rows and 6 columns, in the first couple of lines of
+the output, as seen in the console when run.
 
 ```{r}
 analogy_data%>%
@@ -84,7 +102,11 @@ summarise(N=n()) %>%
   
 ```
 
-2b. The above function proves that there are [99] distinct people in the trial. I could not just apply a simple summary of the amount of qualtrics_id's because there seemed to be some duplicates. This would mean that each ID is one person, so the number of unique id's would be equivalent to the total number of people in the entire experiment. 
+2b. The above function proves that there are [99] distinct people in the
+trial. I could not just apply a simple summary of the amount of
+qualtrics_id's because there seemed to be some duplicates. This would
+mean that each ID is one person, so the number of unique id's would be
+equivalent to the total number of people in the entire experiment.
 
 ```{r}
 analogy_data%>%
@@ -95,11 +117,12 @@ summarise(trial_number, count = n(), .groups = "drop_last")%>%
 #I have checked Stack Overflow for answers, and this one seems to work!
 ```
 
+2c.Yes, everyone has data from the same number of trials. Each unique Id
+has completed n trials, which for all are equal to [8] throughout the
+entire set. There are 99 rows which represents the number of people. So
+each person has data for 8 trials.
 
-
-2c.Yes, everyone has data from the same number of trials. Each unique Id has  completed n trials, which for all are equal to [8] throughout the entire set. There are 99 rows which represents the number of people. So each person has data for 8 trials.
-
-# Weekly Assignment 3 
+# Weekly Assignment 3
 
 ```{r}
 num_of_trials <- analogy_data %>%
@@ -120,6 +143,7 @@ num_of_trials <- analogy_data %>%
 
 #I am also checking to see if num_of_trials runs as expected separately from storing the info in "num_of_trials". Which it works as expected!
 ```
+
 ```{r}
 num_of_trials
 ```
@@ -135,7 +159,13 @@ num_of_trials%>%
 
 
 ```
-2. The variable previously known as "num_of_trials", now renamed to = amount of people, shows a disbursement of how many people responded with "Rel" a certain amount of times. It I also notice from the histogram that the majority of responses came from participants who responded to all of their trials with "Obj", which would not have been found out without this variable. 
+
+2.  The variable previously known as "num_of_trials", now renamed to =
+    amount of people, shows a disbursement of how many people responded
+    with "Rel" a certain amount of times. It I also notice from the
+    histogram that the majority of responses came from participants who
+    responded to all of their trials with "Obj", which would not have
+    been found out without this variable.
 
 ```{r}
 Analogy_Dataset.csv <- analogy_data #%>%
@@ -149,6 +179,7 @@ reshaped_data <- analogy_data %>%
  
 reshaped_data
 ```
+
 ```{r, eval=FALSE}
  #eval=FALSE (chunk header not showing on HTML) 
 analogy_data%>%
@@ -164,15 +195,23 @@ summarise(trial_number, .groups = "drop_last")%>%
 ```
 
 # Weekly Assignment 4
+
 ```{r}
 rationality_ques<- read_csv("MFIndD_REI.csv")
 rationality_ques%>%
   head(6)
 ```
 
-The column type of the "response" column is type <chr>, delineating a character data type ie ("A","b", aka "text"). The column type of the "scored response" column uses <dbl>,which are double (solely numeric) datatypes.This info was found directly underneath the column names. This is due to the fact that numbers AND letters can only exist in the same grouping (in this case the response column), if they are characters. This is true for the response column because not all of the data are numbers. For example, some of them say "Strongly Disagree" and others will have a number "4". In contrast, the scored response column is only numbers, so doubles as the datatype makes sense.
-
-
+The column type of the "response" column is type <chr>, delineating a
+character data type ie ("A","b", aka "text"). The column type of the
+"scored response" column uses <dbl>,which are double (solely numeric)
+datatypes.This info was found directly underneath the column names. This
+is due to the fact that numbers AND letters can only exist in the same
+grouping (in this case the response column), if they are characters.
+This is true for the response column because not all of the data are
+numbers. For example, some of them say "Strongly Disagree" and others
+will have a number "4". In contrast, the scored response column is only
+numbers, so doubles as the datatype makes sense.
 
 ```{r}
 dbl_response <-rationality_ques%>%
@@ -187,7 +226,11 @@ dbl_response <-rationality_ques%>%
 dbl_response
 
 ```
-I wanted to have "TRUE ~ as.numeric(response)" instead of writing out response == 2,3,4, for efficiency. But, because this is a "base-r" function and not dplyr, I stuck to a redundant implementation. 
+
+I wanted to have "TRUE \~ as.numeric(response)" instead of writing out
+response == 2,3,4, for efficiency. But, because this is a "base-r"
+function and not dplyr, I stuck to a redundant implementation.
+
 ```{r}
 #items that need to be scored are marked as "neg" if not then marked with "NA" 
 new_score <- dbl_response%>%
@@ -199,6 +242,7 @@ new_score <- dbl_response%>%
 
 new_score
 ```
+
 ```{r}
 new_score <- new_score %>%
 mutate(is_equal = new_scored_response == scored_response)
@@ -212,6 +256,7 @@ mismatch_count <- new_score %>%
 mismatch_count
   
 ```
+
 n=0, So there are no mismatched values.
 
 # Weekly Assignment 5
@@ -228,6 +273,7 @@ rei_summary <- new_score %>%
 
 rei_summary
 ```
+
 ```{r}
 #Question 1b (part 1)
 
@@ -250,6 +296,7 @@ rei_summary%>%
 #This represents all people who have no "score" recorded for the respective trial(from the summary).
  
 ```
+
 ```{r}
 # Question 1c Here I'll switch the na.rm "condition" back to true as I had it in my original (first code snippet) which I will replicate down below. This will assure that the scores are calculated and represented properly. 
 rei_summary <- new_score %>%
@@ -260,6 +307,7 @@ rei_summary <- new_score %>%
 rei_summary
 
 ```
+
 ```{r}
 # Question 2 Combining the summarized datasets from analogy and rei(that we just finished):
 joined_data <- left_join(rei_summary,num_of_trials, by = ('qualtrics_id')) 
@@ -284,24 +332,35 @@ ggplot(joined_data, aes(x = num_of_trials, y = score, color = sub_type)) +
 
 
 ```
-Question 3 (Pt 2). This scatterplot portrays a pretty even split between the amount of subjects that had 0 "REL" responses and 8 "REL" responses. But, of these two groups(0 and 8) it seems that trials of sub type EE have a sum of scores no greater than 40. I also noticed that overall, throughout all of the test subjects, the sub_type trials that have the highest scores overall are Blue(RA), then Purple)(RE), according to the best fit lines across the plot.
 
+Question 3 (Pt 2). This scatterplot portrays a pretty even split between
+the amount of subjects that had 0 "REL" responses and 8 "REL" responses.
+But, of these two groups(0 and 8) it seems that trials of sub type EE
+have a sum of scores no greater than 40. I also noticed that overall,
+throughout all of the test subjects, the sub_type trials that have the
+highest scores overall are Blue(RA), then Purple)(RE), according to the
+best fit lines across the plot.
 
 # Weekly Assignment 6
 
-1.
+1.  
+
 ```{r}
 magic_ball <- read_csv("MFindD_probtask.csv")
 magic_ball
 ```
-2. part 1 
+
+2.  part 1
+
 ```{r}
 unique_conditions <- magic_ball %>% distinct(condition) %>% 
   pull(condition)
 #distinct conditions values
 unique_conditions
 ```
-2. part 2 
+
+2.  part 2
+
 ```{r}
 mean_reaction_times <- c()
 
@@ -319,7 +378,8 @@ mean_reaction_times
 
 ```
 
-3. part 1
+3.  part 1
+
 ```{r}
 # using across 
 magic_ball%>%
@@ -329,7 +389,8 @@ magic_ball%>%
   select( mean_rt,condition, overall_accuracy)
 ```
 
-3. part 2
+3.  part 2
+
 ```{r}
 # without using across 
 magic_ball %>%
@@ -340,9 +401,11 @@ magic_ball %>%
   )%>%
   select(mean_rt,condition, overall_accuracy)
 ```
-# Weekly Assignment 7 
 
-1.
+# Weekly Assignment 7
+
+1.  
+
 ```{r}
 prob_data <- magic_ball
 ```
@@ -357,29 +420,51 @@ ggplot(aes(y = value, x = condition)) +
 geom_point(color = "red") +
 facet_wrap(~name, scales = "free")
 ```
-1a. 
-Blob_shifted, for the "correct" plot, there seems to be a lower value, than in the rt plot, where the participants scored significantly higher (with a reaction time above 890 secs). 
 
-Blob_stacked, for the "correct" plot, there seems to be a higher amount of correct answers than in the rt plot (reaction time), but the true value in terms of the "hundreds", the rt value is significantly higher. This relation is hard to understand from the graph for someone who is not familiar with the data.
+1a. Blob_shifted, for the "correct" plot, there seems to be a lower
+value, than in the rt plot, where the participants scored significantly
+higher (with a reaction time above 890 secs).
 
-dots_EqSizeSep - People had a higher correct rate here in comparison to their reaction time (rt) it seems that they took longer than their "Rand" counter part. 
+Blob_stacked, for the "correct" plot, there seems to be a higher amount
+of correct answers than in the rt plot (reaction time), but the true
+value in terms of the "hundreds", the rt value is significantly higher.
+This relation is hard to understand from the graph for someone who is
+not familiar with the data.
 
-dots_EqSizerRand - Significantly higher "correct" rate, than "Sep", and lower reaction time in relation to its "Sep" counterpart. 
+dots_EqSizeSep - People had a higher correct rate here in comparison to
+their reaction time (rt) it seems that they took longer than their
+"Rand" counter part.
 
-1b) 
-Because the reaction time (rt) graph and the accuracy (correct) graph have different numerical ranges—rt values are in the high 800s, while correct values range around 0.60 to 0.70—it makes it challenging to compare both sides of the graph directly. This difference in scales can lead to misinterpretation of the data's significance. Graphs with such disparate ranges often require careful consideration or different visualization techniques to ensure clear, accurate comparisons. Additionally, the overlapping names of the conditions at the bottom make it hard to read, further complicating the comparison.
+dots_EqSizerRand - Significantly higher "correct" rate, than "Sep", and
+lower reaction time in relation to its "Sep" counterpart.
 
-1c.
-What’s hard to "see" in this plot:
+1b) Because the reaction time (rt) graph and the accuracy (correct)
+graph have different numerical ranges—rt values are in the high 800s,
+while correct values range around 0.60 to 0.70—it makes it challenging
+to compare both sides of the graph directly. This difference in scales
+can lead to misinterpretation of the data's significance. Graphs with
+such disparate ranges often require careful consideration or different
+visualization techniques to ensure clear, accurate comparisons.
+Additionally, the overlapping names of the conditions at the bottom make
+it hard to read, further complicating the comparison.
 
-Detailed Differences: It's challenging to see more nuanced differences or variance within each condition because the plot only shows mean values. (We would need a larger graph though.)
+1c. What’s hard to "see" in this plot:
 
-As I mentioned before, there are also issues with reading the conditions that are at the bottom of the graph. I had to squint to read them. 
+Detailed Differences: It's challenging to see more nuanced differences
+or variance within each condition because the plot only shows mean
+values. (We would need a larger graph though.)
 
-Distribution of Data: We miss out on how data points are distributed within each condition. Is there a lot of variance? Are there outliers? This type of plot doesn’t convey that information well.(Trends in the graph take a lot of effort to read)
+As I mentioned before, there are also issues with reading the conditions
+that are at the bottom of the graph. I had to squint to read them.
 
-2. 
-(For some reason, when I had a shorter bit of code, "correct" was not being piped in properly)
+Distribution of Data: We miss out on how data points are distributed
+within each condition. Is there a lot of variance? Are there outliers?
+This type of plot doesn’t convey that information well.(Trends in the
+graph take a lot of effort to read)
+
+2.  (For some reason, when I had a shorter bit of code, "correct" was
+    not being piped in properly)
+
 ```{r}
 #Double checking summary is correct/Summarizing to get the proportion of the data correct. 
 prob_data_summary <- prob_data %>%
@@ -389,6 +474,7 @@ prob_data_summary <- prob_data %>%
 # Check the summarized data
 print(prob_data_summary)
 ```
+
 ```{r}
 # Calculate mean proportion correct for each condition
 mean_prop_summary <- prob_data_summary %>%
@@ -397,7 +483,6 @@ mean_prop_summary <- prob_data_summary %>%
             sd_prop_corr = sd(prop_corr),  # Standard deviation for error bars(to help with readability of the plot)
             n = n(), .groups = 'drop')
 ```
-
 
 ```{r}
 
@@ -412,12 +497,17 @@ mean_prop_summary %>%
        x = "Condition", y = "Mean Proportion Correct") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-To make it less misleading I added the following to the plot : 
-Error Bars: Added error bars to show the variability and confidence intervals around the mean proportion correct. This helps understand the precision and spread of the data.
 
-Rotated Axis Labels: Rotated x-axis labels for better readability of the condition names. This avoids overlapping and cluttering of labels.
+To make it less misleading I added the following to the plot : Error
+Bars: Added error bars to show the variability and confidence intervals
+around the mean proportion correct. This helps understand the precision
+and spread of the data.
 
-3. 
+Rotated Axis Labels: Rotated x-axis labels for better readability of the
+condition names. This avoids overlapping and cluttering of labels.
+
+3.  
+
 ```{r}
 
 # Create plot with distributional information
@@ -433,12 +523,19 @@ prob_data_summary %>%
 
 
 ```
-ggdist::stat_slab(): Adds a distributional layer to the plot to show the density and spread of the data for each condition. This provides more insight into the variability and distribution that simple mean values and error bars might miss.
-geom_point() with position_nudge: Plots the mean proportion correct, slightly offset for visual clarity. This makes it easier to distinguish between the distribution and the mean value.
 
-theme(axis.text.x = element_text(angle = 45, hjust = 1)): Ensures the condition names are readable by rotating the x-axis labels.z. 
+ggdist::stat_slab(): Adds a distributional layer to the plot to show the
+density and spread of the data for each condition. This provides more
+insight into the variability and distribution that simple mean values
+and error bars might miss. geom_point() with position_nudge: Plots the
+mean proportion correct, slightly offset for visual clarity. This makes
+it easier to distinguish between the distribution and the mean value.
+
+theme(axis.text.x = element_text(angle = 45, hjust = 1)): Ensures the
+condition names are readable by rotating the x-axis labels.z.
 
 # Weekly Assignment 8
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # Enable floating TOC for notebook
@@ -446,7 +543,7 @@ knitr::opts_chunk$set(toc = TRUE, toc_depth = 1)
 
 ```
 
-2. 
+2.  
 
 ```{r}
 #(Wrangle) calculate mean reaction time and proportion correct by SubID and condition
@@ -457,7 +554,8 @@ average_data <- prob_data %>%
 # Display the first six rows of the new dataframe
 head(average_data, 6)
 ```
-3. Plot 1
+
+3.  Plot 1
 
 ```{r}
 ggplot(average_data, aes(x = rt, y = correct, color = condition)) +
@@ -470,7 +568,7 @@ ggplot(average_data, aes(x = rt, y = correct, color = condition)) +
   theme_minimal()
 ```
 
-Plot 2 
+Plot 2
 
 ```{r}
 # Plot with facet by condition
@@ -485,10 +583,8 @@ ggplot(average_data, aes(x = rt, y = correct)) +
   theme_minimal()
 
 ```
-4. 
-**Observation:** In general, there appears to be a **negative correlation**between reaction time and accuracy across different conditions. As reaction time *decreases*, accuracy tends to *increase* slightly, though the trend varies by condition.
 
-
-
-
-
+4.  **Observation:** In general, there appears to be a **negative
+    correlation**between reaction time and accuracy across different
+    conditions. As reaction time *decreases*, accuracy tends to
+    *increase* slightly, though the trend varies by condition.
