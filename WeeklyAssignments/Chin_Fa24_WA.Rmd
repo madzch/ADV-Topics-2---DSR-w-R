@@ -2,16 +2,20 @@
 title: "D2SC: Weekly Assignments"
 author: "Madison Chin"
 date: "`r Sys.Date()`"
-output: html_document:
+output:
+  html_document:
     toc: true
     toc_float: true
 editor_options: 
   markdown: 
     wrap: 72
+params:
+  workdir: "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data"
+  
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
+#knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
 #had to be added for working dir issues, now fixed
 ```
 
@@ -538,7 +542,7 @@ condition names are readable by rotating the x-axis labels.z.
 
 # Weekly Assignment 8
 
-1. (I updated the YAML, because I used knitr to fix my directory errors)
+1. (I updated the YAML, because I used knitr to fix my directory)
 2.  
 
 ```{r}
