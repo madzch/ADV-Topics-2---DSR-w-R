@@ -15,7 +15,7 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-#knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
+knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
 #had to be added for working dir issues, now fixed/ no edits made 
 ```
 
@@ -66,10 +66,10 @@ packages in a single step. Learn more about the 'tidyverse' at
 
 ```{r}
 
-read_csv("MFIndD_analogy.csv") #renamed 
+#read_csv("MFIndD_analogy.csv") #renamed 
 #Here I am reading in the info from MFIndD_analogy.csv
 
-file.rename("MFIndD_analogy.csv","Analogy_Dataset.csv")
+#file.rename("MFIndD_analogy.csv","Analogy_Dataset.csv")
 #I was unable to find a direct function equivalent to
 #the file.rename() function in  the tidyverse library
 
@@ -563,7 +563,7 @@ ggplot(average_data, aes(x = rt, y = correct, color = condition)) +
   labs(
     title = "Reaction Time vs. Accuracy (Color by Condition)",
     x = "Average Reaction Time (ms)",
-    y = "Proportion Correct"
+    y = "Accuracy"
   ) +
   theme_minimal()
 ```
@@ -578,13 +578,13 @@ ggplot(average_data, aes(x = rt, y = correct)) +
   labs(
     title = "Reaction Time vs. Accuracy (Facets by Condition)",
     x = "Average Reaction Time (ms)",
-    y = "Proportion Correct"
+    y = "Accuracy"
   ) +
   theme_minimal()
 
 ```
 
 4.  **Observation:** In general, there appears to be a **negative
-    correlation**between reaction time and accuracy across different
+    correlation** between reaction time and accuracy across different
     conditions. As reaction time *decreases*, accuracy tends to
     *increase* slightly, though the trend varies by condition.
