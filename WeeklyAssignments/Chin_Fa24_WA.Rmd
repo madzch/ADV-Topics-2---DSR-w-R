@@ -16,7 +16,7 @@ params:
 
 ```{r setup, include=FALSE}
 #knitr::opts_knit$set(root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/tidy_data")
-#had to be added for working dir issues, now fixed
+#had to be added for working dir issues, now fixed/ no edits made 
 ```
 
 # Initial Loading
