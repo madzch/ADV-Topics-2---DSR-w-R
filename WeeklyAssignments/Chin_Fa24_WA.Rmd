@@ -588,3 +588,7 @@ ggplot(average_data, aes(x = rt, y = correct)) +
     correlation** between reaction time and accuracy across different
     conditions. As reaction time *decreases*, accuracy tends to
     *increase* slightly, though the trend varies by condition.
+    
+# Weekly Assignment 9
+
+

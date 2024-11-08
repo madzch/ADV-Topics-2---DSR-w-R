@@ -1,0 +1,106 @@
+---
+title: "Chin_W9"
+author: "Madison Chin"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,root.dir = '~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/Assignment 9') #needed to set(root.dir = '~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/Assignment 9')
+library(tidyverse)
+library(ggplot2)
+#setwd("~/GitHub/ADV-Topics-2---DSR-w-R/WeeklyAssignments/Assignment 9")
+prob_task <- read_csv("data/MFIndD_probtask.csv")
+```
+
+```{r dataprep, include = FALSE}
+```
+
+
+```{r dataprep, include = FALSE}
+prob_data_mod <- prob_task%>%
+  # a. Separate `left_stim` and `right_stim` based on `_` separator
+  separate(left_stim, into = c("left_numerator", "left_other"), sep = "_", fill = "right") %>%
+  separate(right_stim, into = c("right_numerator", "right_other"), sep = "_", fill = "right") %>%
+  
+  # Convert columns to numeric
+  mutate(
+    left_numerator = as.numeric(left_numerator),
+    left_other = as.numeric(left_other),
+    right_numerator = as.numeric(right_numerator),
+    right_other = as.numeric(right_other)
+    
+  ) %>%
+  
+  # c. Create `left_proportion_value` and `right_proportion_value`
+  mutate(
+    left_proportion_value = left_numerator / (left_numerator + left_other),
+    right_proportion_value = right_numerator / (right_numerator + right_other),
+  # d. Create `larger_numerator`
+    larger_numerator = if_else(left_numerator > right_numerator, "left", "right"),
+  # e. Create `larger_proportion`
+    larger_proportion = if_else(left_proportion_value > right_proportion_value, "left", "right"),
+  # f. Create `num_congruent`
+    num_congruent = larger_numerator == larger_proportion
+  )
+```
+
+```{r doublecheckmod, include = FALSE}
+#prob_data_mod
+```
+
+```{r dataprep2,include = FALSE}
+# Summarize data for plotting
+plot_mod <- prob_data_mod %>%
+  group_by(SubID,condition, num_congruent) %>%
+  summarize(proportion_correct = mean(correct), .groups = 'drop')
+#stat_halfeye still not working even though ggplot is in setup chunk
+library(ggdist)
+# Create the plot using `stat_halfeye`
+ggplot(plot_mod, aes(x = condition, y = proportion_correct, color = num_congruent)) +
+  stat_halfeye() +
+  labs(
+    x = "Condition",
+    y = "Proportion Correct",
+    color = "Numerator Congruency"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+```{r doublecheckplotmod, include = FALSE}
+plot_mod
+```
+
+## Slide 1: Big Research Question
+
+**How do people think proportionally with different kinds of stimuli?**
+
+## Slide 2: Little Research Question (Fork)
+
+In this analysis, we’re asking a specific question: **"How does the congruence of numerators and proportions affect participants' accuracy in selecting the larger proportion?"**
+
+We are examining: - Whether the *larger numerator* corresponds with the *larger proportion* across different conditions. - How participants perform under conditions of congruency (when the larger numerator aligns with the larger proportion) vs. incongruency.
+
+## Slide 3: Plot of Proportion Correct by Condition and Congruency
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Summarize data for plotting
+plot_mod <- prob_data_mod %>%
+  group_by(SubID,condition, num_congruent) %>%
+  summarize(proportion_correct = mean(correct), .groups = 'drop')
+#stat_halfeye still not working even though ggplot is in setup chunk
+library(ggdist)
+# Create the plot using `stat_halfeye`
+ggplot(plot_mod, aes(x = condition, y = proportion_correct, color = num_congruent)) +
+  stat_halfeye() +
+  labs(
+    x = "Condition",
+    y = "Proportion Correct",
+    color = "Numerator Congruency"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
