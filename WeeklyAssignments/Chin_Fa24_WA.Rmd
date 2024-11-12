@@ -486,13 +486,14 @@ print(prob_data_summary)
 mean_prop_summary <- prob_data_summary %>%
   group_by(condition) %>%
   summarise(mean_prop_corr = mean(prop_corr),
-            sd_prop_corr = sd(prop_corr),  # Standard deviation for error bars(to help with readability of the plot)
+            sd_prop_corr = sd(prop_corr), prop_corr,  # Standard deviation for error bars(to help with readability of the plot)
             n = n(), .groups = 'drop')
+print(mean_prop_summary)
 ```
 
 ```{r}
 
-mean_prop_summary %>%
+plot_sum<-mean_prop_summary %>%
   ggplot(aes(x = condition, y = mean_prop_corr)) +
   geom_point(color = "blue") +
   geom_errorbar(aes(ymin = mean_prop_corr - sd_prop_corr / sqrt(n), 
@@ -517,10 +518,10 @@ condition names. This avoids overlapping and cluttering of labels.
 ```{r}
 
 # Create plot with distributional information
-prob_data_summary %>%
-  ggplot(aes(x = condition, y = prop_corr)) +
+mean_prop_summary %>%
+  ggplot(aes(x = condition, y = prop_corr )) +
   ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
-  geom_point(aes(x = condition, y = mean(prop_corr)), 
+  geom_point(aes(x = condition, y = mean_prop_corr), 
              color = "blue", position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
   theme_minimal() +
   labs(title = "Distribution of Proportion Correct by Condition",
@@ -589,6 +590,6 @@ ggplot(average_data, aes(x = rt, y = correct)) +
     conditions. As reaction time *decreases*, accuracy tends to
     *increase* slightly, though the trend varies by condition.
     
-# Weekly Assignment 9
+
 
 
