@@ -13,9 +13,6 @@ library(ggplot2)
 prob_task <- read_csv("data/MFIndD_probtask.csv")
 ```
 
-```{r dataprep, include = FALSE}
-```
-
 
 ```{r dataprep, include = FALSE}
 prob_data_mod <- prob_task%>%
@@ -46,7 +43,7 @@ prob_data_mod <- prob_task%>%
 ```
 
 ```{r doublecheckmod, include = FALSE}
-#prob_data_mod
+head (prob_data_mod)
 ```
 
 ```{r dataprep2,include = FALSE}
@@ -66,6 +63,8 @@ ggplot(plot_mod, aes(x = condition, y = proportion_correct, color = num_congruen
   ) +
   theme_minimal() +
   theme(legend.position = "top")
+
+print(plot_mod)
 
 ```
 

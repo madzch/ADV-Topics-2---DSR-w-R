@@ -575,7 +575,7 @@ Plot 2
 # Plot with facet by condition
 ggplot(average_data, aes(x = rt, y = correct)) +
   geom_point() +
-  facet_wrap(~ condition) +
+  facet_wrap((~ condition), scales = 'free_y') +
   labs(
     title = "Reaction Time vs. Accuracy (Facets by Condition)",
     x = "Average Reaction Time (ms)",

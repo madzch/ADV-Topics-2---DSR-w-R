@@ -19,6 +19,7 @@ output:
     self_contained: false
     pandoc_args: --mathjax
     number_sections: false
+    fig.caption: true
 bibliography: packages.bib
 link-citations: true
 ---
@@ -34,6 +35,7 @@ knitr::opts_chunk$set(echo = FALSE,
 options(knitr.table.format = "html")
 library(tidyverse)
 library(ggplot2)
+library(ggdist)
 prob_task <- read_csv("Chin_WA10_files/data/MFIndD_probtask.csv")
 
 ```
@@ -85,43 +87,127 @@ knitr::include_graphics("images_WA10/Probtask_formats.png")
 
 1. Does average performance vary across format type, ignoring all other aspects of the stimuli?
 
-```{r}
+
+```{r dblcheck_prob_task, include = FALSE}
+#Double checking summary is correct/Summarizing to get the proportion of the data correct. 
+prob_data_summary <- prob_task%>%
+  group_by(SubID, condition) %>%
+  summarise(prop_corr = mean(correct), .groups = 'drop')  # Ensure ungrouping
+print(prob_data_summary)
+```
+
+```{r recalcprop_corr, include = FALSE}
+# Calculate mean proportion correct for each condition
+mean_prop_summary <- prob_data_summary%>%
+  group_by(condition) %>%
+  summarise(mean_prop_corr = mean(prop_corr),
+            sd_prop_corr = sd(prop_corr), prop_corr,  # Standard deviation for error bars(to help with readability of the plot)
+            n = n(), .groups = 'drop')
+
+```
+
+```{r returnplot}
+mean_prop_summary %>%
+  ggplot(aes(x = condition, y = prop_corr )) +
+  ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
+  geom_point(aes(x = condition, y = mean_prop_corr), 
+             color = "blue", position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
+  theme_minimal() +
+  labs(title = "Distribution of Accuracy by Condition",
+       x = "Format Type", y = "Accuracy") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
+
+
+```
+*Yes, the blue dots in the above plot prove that the average performance varies across formatting types.*
+
+\newpage
+
+
+2. How are reaction time and accuracy related?
+
+```{r prepprobtask, include = FALSE}
+average_data <- prob_task %>%
+  group_by(SubID, condition) %>%
+  summarize(rt = mean(rt), correct = mean(correct), .groups = 'drop')
+
 
 ```
 
 
-```{r, irisfigure, fig.cap='Here is a caption for the figure. This can be added by using the "fig.cap" option in the r code chunk options, see this [link](https://yihui.name/knitr/options/#plots) from the legend himself, [Yihui Xie](https://twitter.com/xieyihui).', out.width="80%"}
-par(mar=c(2,2,0,1))
-plot(x = iris$Sepal.Length, y = iris$Sepal.Width,
-     col = iris$Species, pch = 19, xlab = "Sepal Length",
-     ylab = "Sepal Width")
+```{r timevsacc}
+# Plot with facet by condition
+ggplot(average_data, aes(x = rt, y = correct)) +
+  geom_point() +
+  geom_smooth() + 
+  facet_wrap((~ condition), scales = 'free_y') +
+  labs(
+    title = "Reaction Time vs. Accuracy (Facets by Condition)",
+    x = "Average Reaction Time (ms)",
+    y = "Accuracy"
+  ) +
+  theme_minimal()
+
 ```
+*As time increases along the x axis, so does the accuracy for each of the format types, until the time reaches about 1250 milliseconds*
 
-Maybe you want to show off some of that fancy code you spent so much time on to make that figure, well you can do that too! Just use the `echo=TRUE` option in the r code chunk options, Figure \@ref(fig:myprettycode)!
 
-```{r myprettycode, echo=TRUE, fig.cap='Boxplots, so hot right now!', fig.height=6, out.width="80%"}
-#trim whitespace
-par(mar=c(2,2,0,0))
-#plot boxplots
-boxplot(iris$Sepal.Width~iris$Species,
-        col = "#008080", 
-        border = "#0b4545",
-        ylab = "Sepal Width (cm)",
-        xlab = "Species")
+3. How does numerator congruency interact with format type
+
+```{r, numcongcalc, include = FALSE}
+prob_data_mod <- prob_task%>%
+  # a. Separate `left_stim` and `right_stim` based on `_` separator
+  separate(left_stim, into = c("left_numerator", "left_other"), sep = "_", fill = "right") %>%
+  separate(right_stim, into = c("right_numerator", "right_other"), sep = "_", fill = "right") %>%
+  
+  # Convert columns to numeric
+  mutate(
+    left_numerator = as.numeric(left_numerator),
+    left_other = as.numeric(left_other),
+    right_numerator = as.numeric(right_numerator),
+    right_other = as.numeric(right_other)
+    
+  ) %>%
+  
+  # c. Create `left_proportion_value` and `right_proportion_value`
+  mutate(
+    left_proportion_value = left_numerator / (left_numerator + left_other),
+    right_proportion_value = right_numerator / (right_numerator + right_other),
+  # d. Create `larger_numerator`
+    larger_numerator = if_else(left_numerator > right_numerator, "left", "right"),
+  # e. Create `larger_proportion`
+    larger_proportion = if_else(left_proportion_value > right_proportion_value, "left", "right"),
+  # f. Create `num_congruent`
+    num_congruent = larger_numerator == larger_proportion
+  )
 ```
+```{r numerplot, include=TRUE}
+# Summarize data for plotting
+plot_mod <- prob_data_mod %>%
+  group_by(SubID,condition, num_congruent) %>%
+  summarize(proportion_correct = mean(correct), .groups = 'drop')
+#stat_halfeye still not working even though ggplot is in setup chunk
 
-How about a neat table of data? See, Table \@ref(tab:iristable):
+# Create the plot using `stat_halfeye`
+ggplot(plot_mod, aes(x = condition, y = proportion_correct, color = num_congruent)) +
+  stat_halfeye() +
+  labs(
+    x = "Format Type",
+    y = "Accuracy",
+    color = "Numerator Congruency"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
 
-```{r, iristable}
-knitr::kable(
-  iris[1:15,1:5], format = "html",
-  caption = "A table made with the **knitr::kable** function.",
-  align = "c", col.names = c("Sepal <br> Length",
-                             "Sepal <br> Width",
-                             "Petal <br> Length",
-                             "Petal <br> Width",
-                             "Species"),
-  escape = FALSE)
 ```
+*Numerator Congruency is only marked TRUE for Accuracy rates above about .60 according to the graph. The largest range of TRUE numerator congruency is in blob_stacked format type than any other formatting.* 
+
+# Interpretation
+Summaries 
+
+# Conclusion
+What was the most annoying or hardest thing about this assignment?
+What was the most satisfying or fun thing about the assignment?
 
 # References
+Skipping for now!
