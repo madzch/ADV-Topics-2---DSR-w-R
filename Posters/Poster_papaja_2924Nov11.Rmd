@@ -15,13 +15,11 @@ author:
 affiliation:
   - id            : "1"
     institution   : "Rutgers University"
-  - id            : "2"
-    institution   : "Konstanz Business School"
 
 authornote: |
   Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
 
-  Enter author note here.
+  As an author, I had so much fun updating this research project in RStudio.
 
 abstract: |
   One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
@@ -70,6 +68,7 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
 
 ## Participants
+Solely the Chicks that were ebing observed over "n" amount of Time
 
 ## Material
 

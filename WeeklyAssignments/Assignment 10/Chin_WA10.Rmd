@@ -1,8 +1,8 @@
 ---
-main_topsize: 0.2 #percent coverage of the poster
+main_topsize: 0.1 #percent coverage of the poster
 main_bottomsize: 0.1
 #ESSENTIALS
-title: '**Proportional reasonoing across formats**'
+title: '**Proportional reasoning across formats**'
 author:
   - name: '**Madison Chin**'
     affil: 1
@@ -10,12 +10,13 @@ affiliation:
   - num: 1
     address: Rutgers University
 main_findings:
-  - "Make **better posters** with RMarkdown + **posterdown**."
+  - "**Proportional reasoning across formats**"
+  
 logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 logocenter_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/qr-code-black.png
 output: 
-  posterdown::posterdown_betterport:
+  posterdown::posterdown_html:
     self_contained: false
     pandoc_args: --mathjax
     number_sections: false
@@ -121,8 +122,6 @@ mean_prop_summary %>%
 ```
 *Yes, the blue dots in the above plot prove that the average performance varies across formatting types.*
 
-\newpage
-
 
 2. How are reaction time and accuracy related?
 
@@ -200,14 +199,19 @@ ggplot(plot_mod, aes(x = condition, y = proportion_correct, color = num_congruen
   theme(legend.position = "top")
 
 ```
-*Numerator Congruency is only marked TRUE for Accuracy rates above about .60 according to the graph. The largest range of TRUE numerator congruency is in blob_stacked format type than any other formatting.* 
+*Numerator Congruency is only marked TRUE for Accuracy rates above about .60 according to the graph, across all format types. The largest range of TRUE numerator congruency is in blob_stacked format type than any other formatting.* 
 
 # Interpretation
-Summaries 
+Out of the three plots that we took a look at, here are the main ideas.Average performance does vary across different formats, when we ignore all aspects of stimuli. But, we analyze how stimuli was affected by formatting type in the Numerator Congruency Plot. Where, we concluded that higher accuracy rates all follow a similar pattern where Numerator Congruency is TRUE above Accuracy rates of about .60. Finally, in our second plot, it is clear to see that accuracy follows a steady increase up until about 1250-1500 millisecond mark where it then dips.
 
 # Conclusion
 What was the most annoying or hardest thing about this assignment?
+
+- I had previously forgot to finish fixing my rstudio code from previous assignments, so debugging and then reproducing them here in this poster was a bit annoying. But, I will say that although it was annoying, I was able to learn more about the data by playing around withe the plot types.
+
 What was the most satisfying or fun thing about the assignment?
 
+- The most satisfying part was probably the first couple of questions of the assignments, as I was flying through them without having to flip constantly back and forth between the rendering and R-Studio to see if everything was working, because it was so straight-forward.
+
 # References
-Skipping for now!
+Skipping this for now!
