@@ -68,6 +68,7 @@ desc%>%
   ggplot(aes(y = full_group_name,
              x = no_categories,
              fill = full_group_name,
+             fct_rev(full_group_name)
             )) + 
   geom_boxplot( color = "black") + 
   xlim(0,15) + 

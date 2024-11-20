@@ -1,0 +1,29 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics[width=1\linewidth]{img11/Probtask_Trial}
+
+}
+
+\caption{ }(\#fig:img1,fig.cap: "")
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics[width=1\linewidth]{img11/Probtask_formats}
+
+}
+
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics[width=1\linewidth]{Chin_WA11_files/figure-latex/returnplot-1}
+
+}
+
+\caption{ }\label{fig:returnplot}
+\end{figure*}

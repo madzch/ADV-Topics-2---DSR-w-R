@@ -67,7 +67,7 @@ First participants were introduced to a story about a magic ball and that the ou
 
 In other words, participants were shown two images of the same kind at the same time and asked to decided which had a higher proportion of the shape (or dots) colored in blue. 
 
-```{r}
+```{r img1}
 knitr::include_graphics("images_WA10/Probtask_Trial.png")
 ```
 Conditions
@@ -109,14 +109,20 @@ mean_prop_summary <- prob_data_summary%>%
 
 ```{r returnplot}
 fixed_plot <- mean_prop_summary %>%
-  ggplot(aes(x = condition, y = prop_corr )) +
+  mutate(condition_name = case_when(
+    condition == "blob_shifted" ~ "Separate Blob", 
+    condition == "blob_stacked" ~ "Half/Half Blob",
+    condition == "dots_EqSizeSep" ~ "Separate Dots",
+    condition == "dots_EqSizeRand" ~ "Mixed Dots"
+  )) %>%
+  ggplot(aes(x = condition_name, y = prop_corr )) +
   ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
-  geom_point(aes(x = condition, y = mean_prop_corr), 
-             color = "blue", position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
+  geom_point(aes(x = condition_name, y = mean_prop_corr), 
+             color = "blue",position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
   theme_minimal() +
   labs(title = "Distribution of Accuracy by Condition",
-       x = "Format Type", y = "Accuracy") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
+       x = "Format Type", y = "Accuracy") 
+   #+theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
 
 fixed_plot + ylim(0,1)
 ```
