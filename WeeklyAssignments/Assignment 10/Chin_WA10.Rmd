@@ -108,7 +108,7 @@ mean_prop_summary <- prob_data_summary%>%
 ```
 
 ```{r returnplot}
-mean_prop_summary %>%
+fixed_plot <- mean_prop_summary %>%
   ggplot(aes(x = condition, y = prop_corr )) +
   ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
   geom_point(aes(x = condition, y = mean_prop_corr), 
@@ -118,7 +118,7 @@ mean_prop_summary %>%
        x = "Format Type", y = "Accuracy") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
 
-
+fixed_plot + ylim(0,1)
 ```
 *Yes, the blue dots in the above plot prove that the average performance varies across formatting types.*
 
