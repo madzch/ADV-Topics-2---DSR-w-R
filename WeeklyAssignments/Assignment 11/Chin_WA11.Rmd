@@ -1,12 +1,10 @@
 ---
 title             : "Proportional reasoning across formats"
-shorttitle        : "PProportional reasoning across formats"
+shorttitle        : "Blob/Dot classification"
 author: 
   - name          : "Madison Chin"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-
-
 
 affiliation:
   - id            : "1"
@@ -18,7 +16,7 @@ wordcount         : "X"
 bibliography      : "r-references.bib"
 
 floatsintext      : yes
-linenumbers       : yes
+linenumbers       : no
 draft             : no
 mask              : no
 
@@ -34,6 +32,8 @@ output            : papaja::apa6_pdf
 library("papaja")
 library(tidyverse)
 library(ggplot2)
+library(ggthemes) #for more interesting plot theme colors
+library(ggdist)
 knitr::opts_chunk$set(echo = FALSE,
                       warning = FALSE,
                       tidy = FALSE,
@@ -42,9 +42,6 @@ knitr::opts_chunk$set(echo = FALSE,
                       fig.align = 'center',
                       out.width = "100%")
 options(knitr.table.format = "html")
-library(tidyverse)
-library(ggplot2)
-library(ggdist)
 prob_task <- read_csv("Chin_WA11_files/data/MFIndD_probtask.csv")
 r_refs("r-references.bib")
 ```
@@ -55,7 +52,8 @@ set.seed(42)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
-```{r themestyle}
+```{r themestyle, include = FALSE}
+theme_set(theme_economist())
 
 
 ```
@@ -63,45 +61,61 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 # Introduction
 Comparing proportions is sometimes very hard! But, even infants seem to be able to do it a little bit. The purpose of this science project was to better understand how well people compare proportions when the proportions are presented in different formats. The purpose of this class assignment is to take the R-code and plots we’ve been generating over the last several weeks and put it all together into one poster format.
 
-# Research Objectives: 
+
+
+## Research Objectives <br>
 1.Does average performance vary across format type?
+
 2.Does average performance vary across numerator congruency status?
+
 3.Does numerator congruency vary across format type?(ie., is there an interaction)
+
+
+
+# Methods
+
+
 
 ## Participants
 ```{r numparts}
 num <- 99
 
 ```
- A total of `r num ` adults participated in the study. 
+A total of `r num ` adults participated in the study. <br>
 
-# Methods
+
 First participants were introduced to a story about a magic ball and that the outcome(ie., blue or orange) depended on the proportions. They were then asked to compare the proportions of different images.
 
 In other words, participants were shown two images of the same kind at the same time and asked to decided which had a higher proportion of the shape (or dots) colored in blue.
 
-```{r img1, fig.cap = " : An example of integrated blobs"}
+\newpage
+
+```{r img1, fig.cap = " An example of integrated blobs" , fig.pos='H', fig.label = "fig::img1"}
 knitr::include_graphics("img11/Probtask_Trial.png")
 
 ```
-Conditions There were four different conditions that changed what kinds of images the participants saw:
+Figure \@ref(fig:img1) shows a clear example of what the "mixed" example of dots would look like to a participant.
+\newpage 
 
-- divided blobs: blur and orange were entirely separate.
-- integrated blob: one blob, divided to be part blue and part orange.
-- separated dots: blue and orange dots were on opposite sides of the image.
-- integrated dots: blue and orange dots were intermixed.
+### Conditions
+There were four different conditions that changed what kinds of images the participants saw:
 
-```{r img2, fig.cap = " From left to right : divided blobs, integrated blobs, separated dots, integraed dots"}
++ divided blobs: blur and orange were entirely separate.
++ integrated blob: one blob, divided to be part blue and part orange.
++ separated dots: blue and orange dots were on opposite sides of the image.
++ integrated dots: blue and orange dots were intermixed.
+
+```{r img2, fig.cap = "A formats in the study", fig.pos= 'H',fig.label = 'img2'}
 knitr::include_graphics("img11/Probtask_formats.png")
 
 ```
-
+Figure \@ref(fig:img2) shows the following from left to right : divided blobs, integrated blobs, separated dots, integrated dots.
 \newpage
+
 
 # Results
 
 1. Does average performance vary across format type, ignoring all other aspects of the stimuli?
-
 
 ```{r dblcheck_prob_task, include = FALSE}
 #Double checking summary is correct/Summarizing to get the proportion of the data correct. 
@@ -121,7 +135,7 @@ mean_prop_summary <- prob_data_summary%>%
 
 ```
 
-```{r returnplot, include = TRUE, fig.cap = "Plot of Distribution of Accuracy by Condition" }
+```{r returnplot, include = TRUE,out.width="70%", fig.cap = "Plot of Distribution of Accuracy by Condition" , fig.pos='H', fig.label = 'dissbycondit'}
 fixed_plot <- mean_prop_summary %>%
   mutate(condition_name = case_when(
     condition == "blob_shifted" ~ "Separate Blob", 
@@ -133,32 +147,129 @@ fixed_plot <- mean_prop_summary %>%
   ggdist::stat_slab() +  # Adds a distributional layer to show the density of the data
   geom_point(aes(x = condition_name, y = mean_prop_corr), 
              color = "blue",position = position_nudge(y = 0.05)) +  # Offset mean points for clarity
-  theme_minimal() +
   labs(title = "Distribution of Accuracy by Condition",
        x = "Format Type", y = "Accuracy") 
    #+theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Improved readability
 
 fixed_plot + ylim(0,1)
+
 ```
 
-*Yes, the blue dots in the above plot prove that the average performance varies across formatting types.*
-
-`r fixed_plot`
-
-2. 
-\newpage
-
-## Data analysis
-We used `r cite_r("r-references.bib")` for all our analyses.
-
-
-# Discussion
-
+*Yes, the blue dots in  Figure \@ref(fig:returnplot) prove that the average performance varies across formatting types.*
 
 \newpage
 
-# References
-use r_refs( file = "references.bib")
+2. How are reaction time and accuracy related? 
+```{r prepprobtask, include = FALSE}
+average_data <- prob_task %>%
+  group_by(SubID, condition) %>%
+  summarize(rt = mean(rt), correct = mean(correct), .groups = 'drop')
 
-::: {#refs custom-style="Bibliography"}
-:::
+
+```
+
+
+```{r timevsacc,out.width = "70%", fig.cap = "Plot of Distribution of Accuracy by Condition" , fig.pos='H', fig.label = 'accbycondit' }
+# Plot with facet by condition
+faceted <- average_data %>%
+  mutate(condition_name = case_when(
+    condition == "blob_shifted" ~ "Separate Blob", 
+    condition == "blob_stacked" ~ "Half/Half Blob",
+    condition == "dots_EqSizeSep" ~ "Separate Dots",
+    condition == "dots_EqSizeRand" ~ "Mixed Dots"
+  )) %>%
+  ggplot(aes(x = rt, y = correct)) +
+  geom_point() +
+  geom_smooth() + 
+  facet_wrap((~ condition_name), scales = 'free_y') +
+  labs(
+    title = "Reaction Time vs. Accuracy (Facets by Condition)",
+    x = "Average Reaction Time (ms)",
+    y = "Accuracy"
+  ) 
+faceted + ylim(0,1)
+```
+*As time increases along the x axis in Figure \@ref(fig:timevsacc), so does the accuracy for each of the format types, until the time reaches about 1250 milliseconds.*
+
+\newpage
+
+3. How does numerator congruency interact with format type?
+
+```{r, numcongcalc, include = FALSE}
+prob_data_mod <- prob_task%>%
+  # a. Separate `left_stim` and `right_stim` based on `_` separator
+  separate(left_stim, into = c("left_numerator", "left_other"), sep = "_", fill = "right") %>%
+  separate(right_stim, into = c("right_numerator", "right_other"), sep = "_", fill = "right") %>%
+  
+  # Convert columns to numeric
+  mutate(
+    left_numerator = as.numeric(left_numerator),
+    left_other = as.numeric(left_other),
+    right_numerator = as.numeric(right_numerator),
+    right_other = as.numeric(right_other),
+  )%>%
+  
+  # c. Create `left_proportion_value` and `right_proportion_value`
+  mutate(
+    left_proportion_value = left_numerator / (left_numerator + left_other),
+    right_proportion_value = right_numerator / (right_numerator + right_other),
+  # d. Create `larger_numerator`
+    larger_numerator = if_else(left_numerator > right_numerator, "left", "right"),
+  # e. Create `larger_proportion`
+    larger_proportion = if_else(left_proportion_value > right_proportion_value, "left", "right"),
+  # f. Create `num_congruent`
+    num_congruent = larger_numerator == larger_proportion
+  )
+```
+
+
+```{r numerplot, include=TRUE, fig.pos='H', fig.label = 'numcong'}
+# Summarize data for plotting
+plot_mod <- prob_data_mod %>%
+  mutate(condition_name = case_when(
+    condition == "blob_shifted" ~ "Separate Blob", 
+    condition == "blob_stacked" ~ "Half/Half Blob",
+    condition == "dots_EqSizeSep" ~ "Separate Dots",
+    condition == "dots_EqSizeRand" ~ "Mixed Dots"
+  )) %>%
+  group_by(SubID,condition_name, num_congruent) %>%
+  summarize(proportion_correct = mean(correct), .groups = 'drop')
+#stat_halfeye still not working even though ggplot is in setup chunk
+
+# Create the plot using `stat_halfeye`
+ggplot(plot_mod, aes(x = condition_name, y = proportion_correct, color = num_congruent)) +
+  stat_halfeye() +
+  labs(
+    x = "Format Type",
+    y = "Accuracy",
+    color = "Numerator Congruency",
+  ) +
+  theme(legend.position = "top")
+
+#plot_mod + ylim(0,1)
+
+```
+
+*Numerator Congruency as shown in Figure \@ref(fig:numerplot) is only marked TRUE for Accuracy rates above about .60 according to the graph, across all format types. The largest range of TRUE numerator congruency is in blob_stacked format type than any other formatting.* 
+
+# Interpretation
+Out of the three plots that we took a look at, here are the main ideas.Average performance does vary across different formats, when we ignore all aspects of stimuli. But, we analyze how stimuli was affected by formatting type in the Numerator Congruency Plot. Where, we concluded that higher accuracy rates all follow a similar pattern where Numerator Congruency is TRUE above Accuracy rates of about .60. Finally, in our second plot, it is clear to see that accuracy follows a steady increase up until about 1250-1500 millisecond mark where it then dips.
+
+# Conclusion
+What was the most annoying or hardest thing about this assignment?
+
+- I had previously forgot to finish re-fixing my rstudio code from previous assignments, so debugging and then reproducing them here in this poster was a bit annoying. But, I will say that although it was annoying, I was able to learn more about the data by playing around withe the plot types.
+
+What was the most satisfying or fun thing about the assignment?
+
+- The most satisfying part was probably the first couple of questions of the assignments, as I was flying through them without having to flip constantly back and forth between the rendering and R-Studio to see if everything was working, because it was so straight-forward. I also had fun using Figure Labeling and Captioning, as it made referencing, and naming (for readers) a lot clearer, so that they can understand what was going on in my plots/figures.
+
+# Data analysis
+I used `r cite_r("r-references.bib")` for the entirety of this assignment.
+
+```{r additional_notes, include = FALSE}
+#r cite_r (.....bib) has automatically identified every and all packages that I have used in this Homework Assignment.
+
+```
+
+

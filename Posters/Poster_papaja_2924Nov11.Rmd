@@ -48,7 +48,6 @@ footnotelist      : no
 
 classoption       : "man"
 output            : papaja::apa6_pdf
-bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
