@@ -76,14 +76,14 @@ Comparing proportions is sometimes very hard! But, even infants seem to be able 
 
 
 
-## Participants
+## Participants<br>
 ```{r numparts}
 num <- 99
 
 ```
 A total of `r num ` adults participated in the study. <br>
 
-
+## Methods<br>
 First participants were introduced to a story about a magic ball and that the outcome(ie., blue or orange) depended on the proportions. They were then asked to compare the proportions of different images.
 
 In other words, participants were shown two images of the same kind at the same time and asked to decided which had a higher proportion of the shape (or dots) colored in blue.
@@ -97,7 +97,7 @@ knitr::include_graphics("img11/Probtask_Trial.png")
 Figure \@ref(fig:img1) shows a clear example of what the "mixed" example of dots would look like to a participant.
 \newpage 
 
-### Conditions
+### Conditions<br>
 There were four different conditions that changed what kinds of images the participants saw:
 
 + divided blobs: blur and orange were entirely separate.
@@ -252,10 +252,12 @@ ggplot(plot_mod, aes(x = condition_name, y = proportion_correct, color = num_con
 
 *Numerator Congruency as shown in Figure \@ref(fig:numerplot) is only marked TRUE for Accuracy rates above about .60 according to the graph, across all format types. The largest range of TRUE numerator congruency is in blob_stacked format type than any other formatting.* 
 
-# Interpretation
+# Discussion
+
+## Interpretation<br>
 Out of the three plots that we took a look at, here are the main ideas.Average performance does vary across different formats, when we ignore all aspects of stimuli. But, we analyze how stimuli was affected by formatting type in the Numerator Congruency Plot. Where, we concluded that higher accuracy rates all follow a similar pattern where Numerator Congruency is TRUE above Accuracy rates of about .60. Finally, in our second plot, it is clear to see that accuracy follows a steady increase up until about 1250-1500 millisecond mark where it then dips.
 
-# Conclusion
+## Conclusion<br>
 What was the most annoying or hardest thing about this assignment?
 
 - I had previously forgot to finish re-fixing my rstudio code from previous assignments, so debugging and then reproducing them here in this poster was a bit annoying. But, I will say that although it was annoying, I was able to learn more about the data by playing around withe the plot types.
