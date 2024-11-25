@@ -81,7 +81,41 @@ desc%>%
   
   #we need to re-order the categories using "factor".
 
-#annotate (geom = "text", y= 1, x = 17.5, ) .... sd was calculated in an earlier chunk. 
+#annotate (geom = "text", y= 1, x = 17.5, ) .... sd was calculated in an earlier chunk. *
 
 ```
+#11/25/24 Continuing with DE3
+
+```{r}
+e2_err
+e15_err
+e5_err
+
+```
+```{r}
+err_data <- bind_rows(e2_err, e5_err)%>%
+  bind_rows(e15_err)
+
+```
+
+```{r}
+err_data%>%
+  ggplot(aes(x = error_2_df, y = error_type,color = group ))+
+  stat_summary(fun.data = mean_se, geom = "pointrange", position = position_dodge(0.7)) #dodge meaning right next to each other 
+#had to rename the blank column in the data to "error_type" manually
+
+
+
+```
+```{r}
+theme_set()
+```
+
+
+```{r}
+#commented out notes from continuation point
+#graph is incorrect due to missing where/what error_type represents, will fix after class
+
+```
+
 
