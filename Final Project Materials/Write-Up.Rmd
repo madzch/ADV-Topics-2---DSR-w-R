@@ -1,0 +1,40 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r set-up}
+knitr::opts_chunk$set(echo = FALSE,root.dir = '~/GitHub/ADV-Topics-2---DSR-w-R/Final Project Materials')
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+```
+
+
+# Information for Initial Ioslide
+
+## Big Question 
+
+How does PTSD influence the way individuals perceive and segment everyday activities into meaningful events?
+
+### Little Question 
+Does PTSD symptom severity, particularly hypervigilance (arousal), affect individuals' ability to segment coarse-grained and fine-grained events while watching neutral, everyday activities in a movie? #
+
+```{r personal_notes}
+#leave out arousal for the official presentation/project assignment project, mostly bc its weird.
+```
+
+
+
+
+
+##Background Info 
+
+```{r secondslide}
+#Where did the dataset come from.  
+```
+

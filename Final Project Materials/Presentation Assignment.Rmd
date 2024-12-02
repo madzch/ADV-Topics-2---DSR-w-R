@@ -1,0 +1,85 @@
+---
+title: "How Does PTSD Hypervigilance Impact Event Segmentation?"
+author: "Madison Chin"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(readxl)
+library(ggthemes)
+knitr::opts_chunk$set(echo = FALSE,root.dir = '~/GitHub/ADV-Topics-2---DSR-w-R/Final Project Materials')
+
+```
+
+
+## Research Questions
+
+### Big Question:
+How does PTSD influence the way individuals perceive and segment everyday activities into meaningful events?
+
+### Little Question:
+How do individual PTSD participants' mean segmentation agreement scores vary across a movie, and what patterns of clustering or dispersion emerge in their performance?
+
+
+## Data Source :{.smaller}
+### Sources:
+- **Study**: 
+- Post-traumatic Stress and the Comprehension of 
+  Everyday Activity by Michelle L. Eisenberg, Jesse Q. Sargent, and Jeffrey M. Zacks.
+  
+- **Participants**: 
+- 137 individuals, aged 21–79, with varying PTSD symptom severity.
+- 51% female; 72% White; mean age = 50 years. 
+- Participants were recruited immediately after their participation in a cross-sectional study of the relationship between age, cognitive ability, and event segmentation.
+
+## Tasks/Methods:{.smaller}
+- Reciting recollection of events after viewing them in a movie (for 3 Movies).
+- PTSD severity was measured using the Traumatic Life Events Questionnaire(TLEQ).
+- Button-press segmentation of coarse and fine-grained events(pressing when the beginning and end of "large" or "small" events occur) while viewing visual stimuli(3 Movies).
+  - Each participant's segmentation (coarse and fine) was compared to the group's overall segmentation using correlations.
+  - These correlations were scaled to a 0–1 range, with 1 representing maximum agreement and 0 representing no agreement. 
+  - Finally, the coarse and fine segmentation scores were averaged to get a final segmentation agreement score for each participant.
+
+
+
+```{r justthetable, echo = TRUE, include = FALSE }
+#viewing to make sure that all info from chosen dataset is being processed correctly.
+data3 <- readxl::read_excel("MaterialData/SegmentationAgreement-scored-corr.xlsx",sheet = 2 )
+head(data3)
+```
+
+## Segmentation Agreement for First Movie: Coarse and Fine Events
+
+```{r fixing_na_data, include = FALSE}
+# Remove rows where all relevant columns are NA
+#These represent participants that left/were unable to complete the scoring assignment.
+clean_data <- data3 %>%
+  filter(rowSums(is.na(select(., AgrMov1:AgrMov3))) != ncol(select(., AgrMov1:AgrMov3)))
+
+tail(clean_data) #checking to make sure that the tailing participants who have null data are erased.
+
+```
+
+```{r plot, include = TRUE, fig.width=8, fig.height= 4}
+# Create a box plot for AgrMov1 (Segmentation Agreement Scores(For coarse and fine grained events (avged out by experimenters)) for First Movie shown to participants)
+ptsd_boxplot <- ggplot(clean_data, aes(x = participant_id, y = AgrMov1)) +
+  geom_point(color = "lightblue") +
+  labs(
+    title = "Movie 1 Segmentation Scores among participants",
+    y = "Segmentation Agreement Scores",
+    x = "Participant ID's",
+    caption = "Figure: Distribution of Segmentation Agreement scores for the First Movie viewing for participants."
+  ) +
+  theme_clean() + 
+  theme(plot.caption = element_text(hjust = 0.5)) +
+  ylim(0,1) + 
+  geom_hline(yintercept = 0.5, color = "red") #Here is what the "norm" of segmenters should lie, according to experimenters.
+
+# Print the plot
+print(ptsd_boxplot)
+```
+
+

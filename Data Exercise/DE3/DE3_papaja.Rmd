@@ -76,6 +76,9 @@ e15_err<- read_csv('data/e15_error_df.csv')
 
 ```
 
+```{r}
+#load in all relevant stuff needed to create the original plots. 
+```
 
 
 # Methods

@@ -346,5 +346,22 @@ ChickWeight %>%
   geom_line()
 ```
 
+# ICMA Dec 2 2024 
 
+```{r}
+months <- c("Jan","Dec","Feb", "March", "April")
+```
+
+```{r}
+sort(months) #gets sorted alphabetically
+```
+```{r}
+factor(months)
+```
+
+
+```{r}
+months_fct <- fct(months, 
+    levels = c("Jan", "Feb", "March","April", "Dec"))
+```
 
