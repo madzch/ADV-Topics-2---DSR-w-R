@@ -7,11 +7,68 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
-```{r set-up}
-knitr::opts_chunk$set(echo = FALSE,root.dir = '~/GitHub/ADV-Topics-2---DSR-w-R/Final Project Materials')
-library(ggplot2)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      tidy = FALSE,
+                      root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/Final Project Materials/Infographic",
+                      message = FALSE,
+                      fig.align = 'center',
+                      out.width = "100%")
+options(knitr.table.format = "html")
 library(tidyverse)
+library(ggplot2)
+library(ggdist)
 library(readxl)
+library(ggthemes)
+library(knitr)
+```
+
+
+```{r justatable, echo = TRUE, include = FALSE }
+#viewing to make sure that all info from chosen dataset is being processed correctly.
+# Adjusting relative path
+#Taking Distress List from TLEQ and adding it to Segmentation Agreement dataset
+rawdata <- readxl::read_excel("SegmentationAgreement-scored-corr.xlsx", sheet = 2)
+head(rawdata)
+```
+
+
+```{r fixing_na_data, include = FALSE}
+# Remove rows where all relevant columns are NA
+#These represent participants that left/were unable to complete the scoring assignment.
+clean_data <- rawdata %>%
+  filter(rowSums(is.na(select(., AgrMov1:AgrMov3))) != ncol(select(., AgrMov1:AgrMov3)))
+
+tail(clean_data) #checking to make sure that the tailing participants who have null data are erased.
+
+```
+
+```{r tleqscoresort, include = FALSE}
+# Clean and standardize TLEQ categories
+clean_data <- clean_data %>%
+  mutate(
+    tleq_score_clean = case_when(
+      str_to_lower(Distress) %in% c("considerable", "extreme") ~ "High Distress",
+      str_to_lower(Distress) %in% c("moderate", "slight by no") ~ "Moderate Distress",
+      str_to_lower(Distress) %in% c("no distress", "slight", "none happened to me") ~ "Low Distress",
+      TRUE ~ NA_character_  # Assign NA for unclassifiable cases
+    )
+  )
+#address NA participants
+clean_data <- clean_data %>%
+  filter(!is.na(tleq_score_clean))
+```
+
+
+```{r tleqscoresortpeek, include = FALSE}
+clean_data <- clean_data %>%
+  mutate(tleq_score_clean = replace_na(tleq_score_clean, "Missing"))
+# Group and summarize segmentation scores by TLEQ categories
+print(clean_data)
+```
+
+
+
 ```
 
 

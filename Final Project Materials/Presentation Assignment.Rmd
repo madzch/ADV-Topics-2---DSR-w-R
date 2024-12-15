@@ -66,7 +66,7 @@ tail(clean_data) #checking to make sure that the tailing participants who have n
 ```{r plot, include = TRUE, fig.width=8, fig.height= 4}
 # Create a box plot for AgrMov1 (Segmentation Agreement Scores(For coarse and fine grained events (avged out by experimenters)) for First Movie shown to participants)
 ptsd_boxplot <- ggplot(clean_data, aes(x = participant_id, y = AgrMov1)) +
-  geom_point(color = "lightblue") +
+  geom_point(color = "darkblue") +
   labs(
     title = "Movie 1 Segmentation Scores among participants",
     y = "Segmentation Agreement Scores",

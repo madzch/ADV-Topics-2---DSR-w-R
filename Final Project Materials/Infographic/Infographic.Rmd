@@ -1,0 +1,217 @@
+---
+title: How PTSD Affects Segmentation of Neutral Activities
+author:
+  - name: Madison Chin
+    affil: 1
+affiliation:
+  - num: 1
+    address: Rutgers University
+column_numbers: 3
+logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+    pandoc_args: --mathjax
+    number_sections: false
+    fig.caption: true
+link-citations: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	fig.align = "center",
+	message = FALSE,
+	out.width = "100%",
+	root.dir = "~/GitHub/ADV-Topics-2---DSR-w-R/Final Project Materials/Infographic",
+	tidy = FALSE
+)
+options(knitr.table.format = "html")
+library(tidyverse)
+library(ggplot2)
+library(ggdist)
+library(readxl)
+library(ggthemes)
+library(knitr)
+library("papaja")
+```
+
+
+```{r justatable, echo = TRUE, include = FALSE }
+#viewing to make sure that all info from chosen dataset is being processed correctly.
+# Adjusting relative path
+#Taking Distress List from TLEQ and adding it to Segmentation Agreement dataset
+rawdata <- readxl::read_excel("SegmentationAgreement-scored-corr.xlsx", sheet = 2)
+head(rawdata)
+```
+
+
+```{r fixing_na_data, include = FALSE}
+# Remove rows where all relevant columns are NA
+#These represent participants that left/were unable to complete the scoring assignment.
+clean_data <- rawdata %>%
+  filter(rowSums(is.na(select(., AgrMov1:AgrMov3))) != ncol(select(., AgrMov1:AgrMov3)))
+
+tail(clean_data) #checking to make sure that the tailing participants who have null data are erased.
+
+```
+
+```{r tleqscoresort, include = FALSE}
+# Clean and standardize TLEQ categories
+clean_data <- clean_data %>%
+  mutate(
+    tleq_score_clean = case_when(
+      str_to_lower(Distress) %in% c("considerable", "extreme") ~ "High Distress",
+      str_to_lower(Distress) %in% c("moderate", "slight by no") ~ "Moderate Distress",
+      str_to_lower(Distress) %in% c("no distress", "slight", "none happened to me") ~ "Low Distress",
+      TRUE ~ NA_character_  # Assign NA for unclassifiable cases
+    )
+  )
+#address NA participants
+clean_data <- clean_data %>%
+  filter(!is.na(tleq_score_clean))
+```
+
+
+```{r tleqscoresortpeek, include = FALSE}
+clean_data <- clean_data %>%
+  mutate(tleq_score_clean = replace_na(tleq_score_clean, "Missing"))
+# Group and summarize segmentation scores by TLEQ categories
+print(clean_data)
+```
+
+
+
+# Introduction
+
+**Big Question**: How does PTSD influence segmentation performance in neutral activities?
+
+**Little Question**: What does the distribution of segmentation agreement scores reveal about PTSD participants' performance for a single movie?
+
+**Hypotheses**:
+- PTSD participants will generally score above a 0.6 threshold, indicating moderate to strong agreement.
+- Higher PTSD severity will correspond to more variability in scores.
+
+**What is Segmentation Agreement?**
+Segmentation agreement measures how closely a participant's identification of meaningful events in a movie aligns with a predefined standard or group consensus. Scores range from 0 (no agreement) to 1 (perfect agreement). This metric captures the participant's ability to recognize event boundaries, reflecting cognitive processing of ongoing activity.
+
+---
+
+# Data and Methods
+
+**Data Source**:Posttraumatic Stress and the Comprehension of Everyday Activity by Michelle Eisenberg and Jesse Q. Sargent and Jeffery M. Zacks)
+
+**Participants**: 137 adults, aged 21–79, with varying PTSD severity levels.
+
+**Task**: Segmentation Task of a single movie into meaningful events (course and fine-grained), scored between 0 and 1.
+
+**PTSD Severity**: Participants' PTSD severity was assessed using the Trauma Life Events Questionnaire (TLEQ), which measures exposure to potentially traumatic events and their psychological impact. Scores from the TLEQ were analyzed to explore the relationship between PTSD severity and segmentation performance.
+
+---
+
+# Results
+
+## Participants sorted by reported TLEQ Scores
+```{r descriptive-stats}
+#after combining dataset info from TLEQexcel and the Segmentation Data.
+summary_table <- clean_data %>%
+  group_by(Distress) %>%
+  summarise(
+    Mean = mean(AgrMov1, na.rm = TRUE),
+    Median = median(AgrMov1, na.rm = TRUE),
+    SD = sd(AgrMov1, na.rm = TRUE),
+    Min = min(AgrMov1, na.rm = TRUE),
+    Max = max(AgrMov1, na.rm = TRUE)
+  )
+
+kable(summary_table, format = "html", caption = "Descriptive Statistics for Agreement Scores")
+```
+
+
+## Plot 1: Density Plot
+
+```{r density-plot, echo = FALSE,fig.cap = "Density plot showing the distribution of segmentation agreement scores (AGR Mov1) for all participants.",fig.width=7,fig.height=5 }
+ggplot(clean_data, aes(x = AgrMov1)) +
+  geom_density(fill = "steelblue", alpha = 0.7) +
+  labs(
+    title = "Distribution of Segmentation Agreement Scores",
+    x = "AGR Mov1 (Segmentation Agreement)",
+    y = "Density",
+  ) +
+  theme_stata(base_size = 14) + xlim(0,1) + ylim(0,5)
+```
+
+## Plot 2: Boxplot + Jitter Plot
+
+```{r boxplot-jitter, fig.cap = "Participants Classified by their PTSD Severity vs Segmentation Agreement Score",,fig.width=8,fig.height=7 }
+ggplot(clean_data, aes(x = tleq_score_clean, y = AgrMov1, fill = tleq_score_clean)) +
+  geom_boxplot(alpha = 0.7, outlier.shape = NA) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +
+  scale_fill_manual(values = c("darkblue", "steelblue","blue")) +
+  labs(
+    title = "Segmentation Agreement by PTSD Severity",
+    x = "PTSD Severity Group",
+    y = "AGR Mov1 (Segmentation Agreement)",
+  ) +
+  theme_stata(base_size = 14) +
+  theme(legend.position = "none")
+```
+\newline 
+\newline
+\newline
+\newline
+# Discussion/Conclusion
+- **Findings**:
+  - Most participants scored above 0.6, with clustering around 0.6–0.7.
+  - All participant with outlier segmentation agreement scores are in the Low-Moderate Distress Categories
+  - Variability increased with lower PTSD severity, disproving the hypothesis.
+
+- **Implications**:
+  - PTSD participants don't generally align with expected segmentation norms.
+  - Moderate PTSD distress may disrupt segmentation consistency more than high distress, 
+  suggesting a nonlinear relationship between PTSD severity and segmentation performance.
+
+<h6>
+### **Works Cited**  
+Arnold, Jeffrey B. *ggthemes: Extra Themes, Scales and Geoms for 'ggplot2'*. R package version 5.1.0, 2024, CRAN, [https://CRAN.R-project.org/package=ggthemes](https://CRAN.R-project.org/package=ggthemes).  
+
+Francois, Romain, and Diego Hernangomez. *bibtex: Bibtex Parser*. R package version 0.5.1, 2023, CRAN, [https://CRAN.R-project.org/package=bibtex](https://CRAN.R-project.org/package=bibtex).  
+
+Grolemund, Garrett, and Hadley Wickham. "Dates and Times Made Easy with *lubridate*." *Journal of Statistical Software*, vol. 40, no. 3, 2011, pp. 1–25. [https://www.jstatsoft.org/v40/i03/](https://www.jstatsoft.org/v40/i03/).  
+
+Kay, Matthew. "ggdist: Visualizations of Distributions and Uncertainty in the Grammar of Graphics." *IEEE Transactions on Visualization and Computer Graphics*, vol. 30, no. 1, 2024, pp. 414–24. DOI: 10.1109/TVCG.2023.3327195.  
+
+R Core Team. *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing, 2024, [https://www.R-project.org/](https://www.R-project.org/).  
+
+Thorne, Brent. *posterdown: Generate PDF Conference Posters Using R Markdown*. R package version 1.0, 2019, [https://github.com/brentthorne/posterdown](https://github.com/brentthorne/posterdown).  
+
+Wickham, Hadley. *ggplot2: Elegant Graphics for Data Analysis*. Springer-Verlag, 2016.  
+
+Wickham, Hadley, et al. *dplyr: A Grammar of Data Manipulation*. R package version 1.1.4, 2023, CRAN, [https://CRAN.R-project.org/package=dplyr](https://CRAN.R-project.org/package=dplyr).  
+
+Wickham, Hadley, and Jennifer Bryan. *readxl: Read Excel Files*. R package version 1.4.3, 2023, CRAN, [https://CRAN.R-project.org/package=readxl](https://CRAN.R-project.org/package=readxl).  
+
+Wickham, Hadley, and Jim Hester, and Jennifer Bryan. *readr: Read Rectangular Text Data*. R package version 2.1.5, 2024, CRAN, [https://CRAN.R-project.org/package=readr](https://CRAN.R-project.org/package=readr).  
+
+Wickham, Hadley, and Lionel Henry. *purrr: Functional Programming Tools*. R package version 1.0.2, 2023, CRAN, [https://CRAN.R-project.org/package=purrr](https://CRAN.R-project.org/package=purrr).  
+
+Wickham, Hadley. *forcats: Tools for Working with Categorical Variables (Factors)*. R package version 1.0.0, 2023, CRAN, [https://CRAN.R-project.org/package=forcats](https://CRAN.R-project.org/package=forcats).  
+
+Wickham, Hadley. *stringr: Simple, Consistent Wrappers for Common String Operations*. R package version 1.5.1, 2023, CRAN, [https://CRAN.R-project.org/package=stringr](https://CRAN.R-project.org/package=stringr).  
+
+Xie, Yihui. *Dynamic Documents with R and knitr*. 2nd ed., Chapman and Hall/CRC, 2015, [https://yihui.org/knitr/](https://yihui.org/knitr/).  
+
+Xie, Yihui. "knitr: A Comprehensive Tool for Reproducible Research in R." *Implementing Reproducible Computational Research*, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng, Chapman and Hall/CRC, 2014.  
+
+Xie, Yihui. *knitr: A General-Purpose Package for Dynamic Report Generation in R*. R package version 1.48, 2024, [https://yihui.org/knitr/](https://yihui.org/knitr/).  
+
+Xie, Yihui, and J.J. Allaire, and Garrett Grolemund. *R Markdown: The Definitive Guide*. Chapman and Hall/CRC, 2018, [https://bookdown.org/yihui/rmarkdown](https://bookdown.org/yihui/rmarkdown).  
+
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. *R Markdown Cookbook*. Chapman and Hall/CRC, 2020, [https://bookdown.org/yihui/rmarkdown-cookbook](https://bookdown.org/yihui/rmarkdown-cookbook).  
+
+Xie, Yihui, Romain Lesur, Brent Thorne, and Xianying Tan. *pagedown: Paginate the HTML Output of R Markdown with CSS for Print*. R package version 0.21, 2024, [https://github.com/rstudio/pagedown](https://github.com/rstudio/pagedown).  
+
+<h6>
+
+
