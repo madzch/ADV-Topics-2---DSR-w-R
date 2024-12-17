@@ -132,9 +132,8 @@ kable(summary_table, format = "html", caption = "Descriptive Statistics for Agre
 <br>
 <br>
 <br>
-<br>
 
-## Plot 1: Density Plot
+# Density Plot
 ```{r density-plot, echo = FALSE,fig.cap = "Density plot showing the distribution of segmentation agreement scores (AGR Mov1) for all participants.",fig.width=7,fig.height=5 }
 ggplot(clean_data, aes(x = AgrMov1)) +
   geom_density(fill = "steelblue", alpha = 0.7) +
@@ -146,7 +145,7 @@ ggplot(clean_data, aes(x = AgrMov1)) +
   theme_stata(base_size = 14) + xlim(0,1) + ylim(0,5)
 ```
 
-## Plot 2: Boxplot + Jitter Plot
+# Boxplot + Jitter Plot
 
 ```{r boxplot-jitter, fig.cap = "Participants Classified by their PTSD Severity vs Segmentation Agreement Score",,fig.width=8,fig.height=7 }
 ggplot(clean_data, aes(x = tleq_score_clean, y = AgrMov1, fill = tleq_score_clean)) +
@@ -161,10 +160,8 @@ ggplot(clean_data, aes(x = tleq_score_clean, y = AgrMov1, fill = tleq_score_clea
   theme_stata(base_size = 14) +
   theme(legend.position = "none")
 ```
-\newline 
-\newline
-\newline
-\newline
+<br>
+
 # Discussion/Conclusion
 - **Findings**:
   - Most participants scored above 0.6, with clustering around 0.6–0.7.
