@@ -111,12 +111,11 @@ Segmentation agreement measures how closely a participant's identification of me
 ---
 
 # Results
-
-## Participants sorted by reported TLEQ Scores
+## Participants sorted by reported TLEQ Scores (Distress)
 ```{r descriptive-stats}
 #after combining dataset info from TLEQexcel and the Segmentation Data.
 summary_table <- clean_data %>%
-  group_by(Distress) %>%
+  group_by(tleq_score_clean) %>%
   summarise(
     Mean = mean(AgrMov1, na.rm = TRUE),
     Median = median(AgrMov1, na.rm = TRUE),
@@ -125,12 +124,17 @@ summary_table <- clean_data %>%
     Max = max(AgrMov1, na.rm = TRUE)
   )
 
-kable(summary_table, format = "html", caption = "Descriptive Statistics for Agreement Scores")
+kable(summary_table, format = "html", caption = "Descriptive Statistics for Agreement Scores by Distress Level")
 ```
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## Plot 1: Density Plot
-
 ```{r density-plot, echo = FALSE,fig.cap = "Density plot showing the distribution of segmentation agreement scores (AGR Mov1) for all participants.",fig.width=7,fig.height=5 }
 ggplot(clean_data, aes(x = AgrMov1)) +
   geom_density(fill = "steelblue", alpha = 0.7) +
